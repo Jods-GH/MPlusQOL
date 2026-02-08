@@ -1,0 +1,60 @@
+## Interface: 110207, 120000, 120001
+## Title: MPlusQOL
+## Version: @project-version@
+## Notes: A multitude of Qol improvements for M+ Dungeons.
+## SavedVariables: MPlusQOL
+## Author: Jods
+## X-Curse-Project-ID: 
+## X-Wago-ID: 
+## OptionalDeps: Ace3
+## AddonCompartmentFunc: MPlusQOL_AddonCompartmentFunction
+## IconTexture: Interface\AddOns\MPlusQOL\Files\MPlusQOLLogo.tga
+## Category: Other
+## Category-deDE: Anderes
+## Category-esES: Otros
+## Category-esMX: Otros
+## Category-frFR: Autre
+## Category-itIT: Altro
+## Category-koKR: 기타
+## Category-ptBR: Outro
+## Category-ruRU: Другое
+## Category-zhCN: 其它
+## Category-zhTW: 其他
+#Libs
+embeds.xml
+
+# Locales
+Locales\enUS.lua
+Locales\deDE.lua
+Locales\esES.lua
+Locales\itIT.lua
+Locales\frFR.lua
+Locales\esMX.lua
+Locales\koKR.lua
+Locales\ptBR.lua
+Locales\ruRU.lua
+Locales\zhCN.lua
+Locales\zhTW.lua
+ 
+Locales\Locales.lua
+
+# Options
+Options\OptionDefaults.lua
+Options\Options.lua
+
+# Templates
+Templates\MQOL_RepairReminder.lua
+Templates\MQOL_DiedBar.lua
+
+# Main logic
+Main.lua
+
+# Modules
+
+Modules\RepairReminder.lua
+Modules\MemberDiedBar.lua
+
+
+
+
+
