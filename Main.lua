@@ -13,6 +13,9 @@ function private.Addon:OnInitialize()
     private.Addon:RegisterEvent("PLAYER_UPDATE_RESTING")
     private.Addon:RegisterEvent("UPDATE_INVENTORY_DURABILITY")
     private.Addon:RegisterEvent("UNIT_DIED")
+    private.Addon:RegisterEvent("INCOMING_RESURRECT_CHANGED")
+    private.Addon:RegisterEvent("PLAYER_ALIVE")
+    private.Addon:RegisterEvent("PLAYER_UNGHOST")
 
     private.db = LibStub("AceDB-3.0"):New("MPlusQOL", private.OptionDefaults, true) -- Generates Saved Variables with default Values (if they don't already exist)
     local OptionTable = {

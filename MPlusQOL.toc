@@ -45,12 +45,13 @@ Options\Options.lua
 # Templates
 Templates\MQOL_RepairReminder.lua
 Templates\MQOL_DiedBar.lua
+Templates\MQOL_ResurrectionReminder.lua
 
 # Main logic
 Main.lua
 
 # Modules
-
+Modules\ResurectionReminder.lua
 Modules\RepairReminder.lua
 Modules\MemberDiedBar.lua
 

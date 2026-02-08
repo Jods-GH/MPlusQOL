@@ -21,5 +21,9 @@ if L then
     L["deathReminderBorderTextureDescription"] = "The border texture of the death reminder bar."
     L["deathReminderTexture"] = "Death Reminder Bar Texture"
     L["deathReminderTextureDescription"] = "The texture of the death reminder bar."
+    L["enableResurrectionReminder"] = "Enable Resurrection Reminder"
+    L["enableResurrectionReminderDescription"] = "Show a reminder when you have an incoming resurrection."
+    L["resurrectionReminderSound"] = "Resurrection Reminder Sound"
+    L["resurrectionReminderSoundDescription"] = "Sound played when you have an incoming resurrection."
     private.localisation = L
 end

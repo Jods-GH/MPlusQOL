@@ -10,5 +10,7 @@ private.OptionDefaults = {
 		deathReminderBackgroundTexture = "Blizzard Dialog Background",
 		deathReminderBorderTexture = "Solid",
 		deathReminderTexture = "Solid",
+		enableResurrectionReminder = true,
+		resurrectionReminderSound = "None",
 	}
 }
