@@ -38,6 +38,9 @@ Locales\zhTW.lua
  
 Locales\Locales.lua
 
+# Util
+Util\EditMode.lua
+
 # Options
 Options\OptionDefaults.lua
 Options\Options.lua
@@ -46,6 +49,7 @@ Options\Options.lua
 Templates\MQOL_RepairReminder.lua
 Templates\MQOL_DiedBar.lua
 Templates\MQOL_ResurrectionReminder.lua
+Templates\MQOL_BrezTimer.lua
 
 # Main logic
 Main.lua
@@ -54,6 +58,7 @@ Main.lua
 Modules\ResurectionReminder.lua
 Modules\RepairReminder.lua
 Modules\MemberDiedBar.lua
+Modules\BrezTimer.lua
 
 
 

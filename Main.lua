@@ -16,6 +16,11 @@ function private.Addon:OnInitialize()
     private.Addon:RegisterEvent("INCOMING_RESURRECT_CHANGED")
     private.Addon:RegisterEvent("PLAYER_ALIVE")
     private.Addon:RegisterEvent("PLAYER_UNGHOST")
+    private.Addon:RegisterEvent("CHALLENGE_MODE_START")
+    private.Addon:RegisterEvent("CHALLENGE_MODE_COMPLETED")
+    private.Addon:RegisterEvent("ZONE_CHANGED_NEW_AREA")
+    private.Addon:RegisterEvent("ENCOUNTER_START")
+    private.Addon:RegisterEvent("ENCOUNTER_END")
 
     private.db = LibStub("AceDB-3.0"):New("MPlusQOL", private.OptionDefaults, true) -- Generates Saved Variables with default Values (if they don't already exist)
     local OptionTable = {
@@ -46,5 +51,15 @@ function MPlusQOL_AddonCompartmentFunction()
 end
 
 function private.Addon:SlashCommand(msg) -- called when slash command is used
+    if msg == "testres" then
+        private.Addon:INCOMING_RESURRECT_CHANGED(nil, "player")
+        return
+    elseif msg == "testaccept" then
+        private.Addon:PLAYER_ALIVE()
+        return
+    elseif msg == "testtimer" then
+        private.Addon:CHALLENGE_MODE_START()
+        return
+    end
     AceConfigDialog:Open(appName)
 end

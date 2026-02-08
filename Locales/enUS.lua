@@ -25,5 +25,8 @@ if L then
     L["enableResurrectionReminderDescription"] = "Show a reminder when you have an incoming resurrection."
     L["resurrectionReminderSound"] = "Resurrection Reminder Sound"
     L["resurrectionReminderSoundDescription"] = "Sound played when you have an incoming resurrection."
+    L["BrezTimer"] = "Brez Timer"
+    L["EnableBrezTimer"] = "Enable Brez Timer"
+    L["EnableBrezTimerDescription"] = "Show a timer for battle ressurections in Mythic+ dungeons and raids."
     private.localisation = L
 end
