@@ -67,6 +67,8 @@ end
 function private.Addon:PLAYER_ENTERING_WORLD(event, isLogin, isReload)
     if IsResting() then
         private.CheckForRepair()
+    else
+        ToggleRepairReminder(false)
     end
 end
 
@@ -79,5 +81,9 @@ function private.Addon:PLAYER_UPDATE_RESTING(event, eventInfo, initialState)
 end
 
 function private.Addon:UPDATE_INVENTORY_DURABILITY()
-    private.CheckForRepair()
+    if IsResting() then
+        private.CheckForRepair()
+    else
+        ToggleRepairReminder(false)
+    end
 end
