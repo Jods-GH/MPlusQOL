@@ -3,31 +3,55 @@ local AceGUI = LibStub("AceGUI-3.0")
 local SharedMedia = LibStub("LibSharedMedia-3.0")
 local Type = "MQOL_DiedBar"
 local Version = 1
-local variables = {
-    bar_height = 40,
-    bar_width = 600,
+private.diedBarVariables = {
+    height = 40,
+    width = 600,
+    position = {
+        point = 'TOP',
+        y = -180,
+        x = 0,
+    },
+    barColor = CreateColor(1, 0, 0, 1),
+    duration = 3,
 }
 
 local function ApplySettings(widget)
-    if private.db.profile.deathReminderTexture then
-        widget.frame:SetStatusBarTexture(SharedMedia:Fetch("statusbar", private.db.profile.deathReminderTexture))
+    if private.db.global.memberDiedBar[private.ACTIVE_EDITMODE_LAYOUT].texture then
+        widget.frame:SetStatusBarTexture(SharedMedia:Fetch("statusbar",
+            private.db.global.memberDiedBar[private.ACTIVE_EDITMODE_LAYOUT].texture))
     end
-    local bgTexture ="Interface\\DialogFrame\\UI-DialogBox-Background"
-    local borderTexture = "Interface\\DialogFrame\\UI-DialogBox-Border"
-    if private.db.profile.deathReminderBackgroundTexture then
-        bgTexture = SharedMedia:Fetch("background", private.db.profile.deathReminderBackgroundTexture)
-    end
-    if private.db.profile.deathReminderBorderTexture then
-        borderTexture = SharedMedia:Fetch("border", private.db.profile.deathReminderBorderTexture)
+    local bgTexture = "Interface\\DialogFrame\\UI-DialogBox-Background"
+    if private.db.global.memberDiedBar[private.ACTIVE_EDITMODE_LAYOUT].bgTexture then
+        bgTexture = SharedMedia:Fetch("background",
+            private.db.global.memberDiedBar[private.ACTIVE_EDITMODE_LAYOUT].bgTexture)
     end
     widget.frame:SetBackdrop({
         bgFile = bgTexture,
-        edgeFile = borderTexture,
-        tile = true,
+        tile = false,
         tileSize = 32,
-        edgeSize = 4,
         insets = { left = 0, right = 0, top = 0, bottom = 0 }
     })
+
+    if private.db.global.memberDiedBar[private.ACTIVE_EDITMODE_LAYOUT] then
+        widget.frame:SetPoint(private.db.global.memberDiedBar[private.ACTIVE_EDITMODE_LAYOUT].point, UIParent,
+            private.db.global.memberDiedBar[private.ACTIVE_EDITMODE_LAYOUT].point,
+            private.db.global.memberDiedBar[private.ACTIVE_EDITMODE_LAYOUT].x,
+            private.db.global.memberDiedBar[private.ACTIVE_EDITMODE_LAYOUT].y)
+    else
+        widget.frame:SetPoint("CENTER", UIParent, "CENTER")
+    end
+
+    if private.db.global.memberDiedBar[private.ACTIVE_EDITMODE_LAYOUT].width then
+        widget.frame:SetWidth(private.db.global.memberDiedBar[private.ACTIVE_EDITMODE_LAYOUT].width)
+    end
+    if private.db.global.memberDiedBar[private.ACTIVE_EDITMODE_LAYOUT].height then
+        widget.frame:SetHeight(private.db.global.memberDiedBar[private.ACTIVE_EDITMODE_LAYOUT].height)
+    end
+
+    if private.db.global.memberDiedBar[private.ACTIVE_EDITMODE_LAYOUT].barColor then
+        local color = private.db.global.memberDiedBar[private.ACTIVE_EDITMODE_LAYOUT].barColor
+        widget.frame:SetStatusBarColor(color.r, color.g, color.b, color.a)
+    end
 end
 
 ---@param self MQOL_DiedBar
@@ -44,7 +68,6 @@ local function OnRelease(self)
     self.frame:SetValue(0)
 end
 
-local MEMBER_DIED_DURATION = 5
 local function SetGUIDAndStartTimer(widget, unitGUID)
     local name, realm = UnitNameFromGUID(unitGUID)
     local class, classFile, classID = UnitClassFromGUID(unitGUID)
@@ -52,8 +75,9 @@ local function SetGUIDAndStartTimer(widget, unitGUID)
     widget.frame:SetScript("OnUpdate", function(self, elapsed)
         if self.startTime then
             local elapsedTime = GetTime() - self.startTime
-            if elapsedTime < MEMBER_DIED_DURATION then
-                self:SetValue(100 * elapsedTime / MEMBER_DIED_DURATION)
+            local duration = private.db.global.memberDiedBar[private.ACTIVE_EDITMODE_LAYOUT].duration or private.diedBarVariables.duration
+            if elapsedTime < duration then
+                self:SetValue(100 * elapsedTime / duration)
             else
                 widget:Release()
             end
@@ -67,21 +91,11 @@ end
 
 local function Constructor()
     local count = AceGUI:GetNextWidgetNum(Type)
-    local frame = CreateFrame("StatusBar", "MQOL_DiedBar_" .. count, UIParent,"BackdropTemplate")
-    frame:SetSize(variables.bar_width, variables.bar_height)
-    frame:SetPoint("TOP", UIParent, "TOP", 0, -100)
-    frame:SetBackdrop({
-        bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",
-        edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border",
-        tile = true,
-        tileSize = 32,
-        edgeSize = 32,
-        insets = { left = 0, right = 0, top = 0, bottom = 0 }
-    })
+    local frame = CreateFrame("StatusBar", "MQOL_DiedBar_" .. count, UIParent, "BackdropTemplate")
+    frame:SetSize(private.diedBarVariables.width, private.diedBarVariables.height)
     frame:SetMinMaxValues(0, 100)
     frame:SetValue(0)
-    frame:SetStatusBarTexture("Interface\\TARGETINGFRAME\\UI-StatusBar")
-    frame:SetStatusBarColor(1, 0, 0, 1)
+    frame:SetStatusBarColor(private.diedBarVariables.barColor:GetRGBA())
     frame:Show()
     -- Text above bar
     frame.Text = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
@@ -96,7 +110,8 @@ local function Constructor()
         type = Type,
         count = count,
         frame = frame,
-        SetGUIDAndStartTime = SetGUIDAndStartTimer,
+        SetGUIDAndStartTimer = SetGUIDAndStartTimer,
+        ApplySettings = ApplySettings,
     }
 
     return AceGUI:RegisterAsWidget(widget)

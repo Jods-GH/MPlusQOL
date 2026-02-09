@@ -2,12 +2,6 @@ local appName, private = ...
 local AceGui = LibStub("AceGUI-3.0")
 local SharedMedia = LibStub("LibSharedMedia-3.0")
 local LibEditMode = LibStub("LibEditMode")
-local function CreateBrezTimer()
-    local widget = AceGui:Create("MQOL_BrezTimer")
-    widget.frame:Show()
-    widget:StartTimer()
-    return widget
-end
 local variables = {
      position = {
         point = 'CENTER',
@@ -15,6 +9,13 @@ local variables = {
         x = 0,
     },
 }
+
+local function CreateBrezTimer()
+    local widget = AceGui:Create("MQOL_BrezTimer")
+    widget.frame:Show()
+    widget:StartTimer()
+    return widget
+end
 
 local function ShowBrezTimer()
     if not private.brezTimer then

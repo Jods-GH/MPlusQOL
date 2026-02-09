@@ -8,7 +8,6 @@ private.Addon = LibStub("AceAddon-3.0"):NewAddon("MPlusQOL", "AceConsole-3.0", "
 function private.Addon:OnInitialize()
     -- Called when the addon is loaded
     
-    --private.Addon:RegisterEvent("PLAYER_ENTERING_WORLD")
     private.Addon:RegisterEvent("PLAYER_ENTERING_WORLD")
     private.Addon:RegisterEvent("PLAYER_UPDATE_RESTING")
     private.Addon:RegisterEvent("UPDATE_INVENTORY_DURABILITY")
@@ -59,6 +58,9 @@ function private.Addon:SlashCommand(msg) -- called when slash command is used
         return
     elseif msg == "testtimer" then
         private.Addon:CHALLENGE_MODE_START()
+        return
+    elseif msg == "testdeath" then
+        private.Addon:UNIT_DIED(nil, UnitGUID("player"))
         return
     end
     AceConfigDialog:Open(appName)
