@@ -109,9 +109,11 @@ end
 
 LibEditMode:RegisterCallback('enter', function(layoutName)
     ToggleBrezTimer(true)
+    private.brezTimer:StartTimer(true)
     SetupEditModeSettings(private.brezTimer.frame)
 end)
 
 LibEditMode:RegisterCallback('exit', function(layoutName)
+     private.brezTimer:StartTimer(false)
     ToggleBrezTimer(shouldBrezTimerBeShown())
 end)

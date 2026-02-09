@@ -45,7 +45,8 @@ if L then
     L["deathReminderTextureDescription"] = "The texture of the death reminder bar."
 
     --brez timer
-    L["BrezTimer"] = "Brez Timer"
+    L["BrezTimer"] = "Battleress"
+    L["BrezNextIn"] = "Next In"
     L["EnableBrezTimer"] = "Enable Brez Timer"
     L["EnableBrezTimerDescription"] = "Show a timer for battle ressurections in Mythic+ dungeons and raids."
     
