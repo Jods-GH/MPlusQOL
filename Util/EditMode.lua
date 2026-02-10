@@ -3,6 +3,11 @@ local LibEditMode = LibStub("LibEditMode")
 
 LibEditMode:RegisterCallback('layout', function(layoutName)
     private.ACTIVE_EDITMODE_LAYOUT = layoutName
+    if private.db then
+        private.initializeBrezTimer()
+        private.initializeMemberDiedBar()
+        private.initializeRepairReminder()
+    end
 end)
 
 

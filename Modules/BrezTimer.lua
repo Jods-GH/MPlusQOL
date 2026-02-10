@@ -3,10 +3,10 @@ local AceGui = LibStub("AceGUI-3.0")
 local SharedMedia = LibStub("LibSharedMedia-3.0")
 local LibEditMode = LibStub("LibEditMode")
 local variables = {
-     position = {
-        point = 'CENTER',
-        y = 0,
-        x = 0,
+    position = {
+        x = 428,
+        point = "BOTTOM",
+        y = 22,
     },
 }
 
@@ -107,13 +107,31 @@ local function SetupEditModeSettings(frame)
     end
 end
 
+private.initializeBrezTimer = function()
+    if not private.db.global.brezTimer then
+        private.db.global.brezTimer = {}
+    end
+    if not private.db.global.brezTimer[private.ACTIVE_EDITMODE_LAYOUT] then
+        private.db.global.brezTimer[private.ACTIVE_EDITMODE_LAYOUT] = {
+            enabled = true,
+            x = variables.position.x,
+            y = variables.position.y,
+            point = variables.position.point,
+        }
+    end
+end
+
 LibEditMode:RegisterCallback('enter', function(layoutName)
-    ToggleBrezTimer(true)
-    private.brezTimer:StartTimer(true)
-    SetupEditModeSettings(private.brezTimer.frame)
+    if private.isInitialized then
+        ToggleBrezTimer(true)
+        private.brezTimer:StartTimer(true)
+        SetupEditModeSettings(private.brezTimer.frame)
+    end
 end)
 
 LibEditMode:RegisterCallback('exit', function(layoutName)
-     private.brezTimer:StartTimer(false)
-    ToggleBrezTimer(shouldBrezTimerBeShown())
+    if private.isInitialized then
+        private.brezTimer:StartTimer(false)
+        ToggleBrezTimer(shouldBrezTimerBeShown())
+    end
 end)

@@ -29,7 +29,10 @@ function private.Addon:OnInitialize()
             other = private.options
         }
     }
-
+    private.initializeBrezTimer()
+    private.initializeMemberDiedBar()
+    private.initializeRepairReminder()
+    private.isInitialized = true
     AceConfig:RegisterOptionsTable(appName, OptionTable) --
     AceConfigDialog:AddToBlizOptions(appName, appName)
     self:RegisterChatCommand("mplusqol", "SlashCommand")

@@ -184,7 +184,7 @@ local function SetupEditModeSettings(frame)
                     return CreateColor(color.r, color.g, color.b, color.a)
                 end,
                 set = function(layoutName, value)
-                    private.db.global.memberDiedBar[layoutName].barColor = value
+                    private.db.global.memberDiedBar[layoutName].barColor = value:GetRGBA()
                     private.memberDiedBar:ApplySettings()
                 end,
                 default = private.diedBarVariables.barColor,
@@ -216,36 +216,58 @@ local function SetupEditModeSettings(frame)
     end
 end
 
-LibEditMode:RegisterCallback('enter', function(layoutName)
-    private.memberDiedBar = AceGui:Create("MQOL_DiedBar")
-    private.memberDiedBar.frame:Show()
-    private.memberDiedBar.frame.startTime = GetTime()
-    private.memberDiedBar.frame:SetScript("OnUpdate", function(self, elapsed)
-        if self.startTime then
-            local elapsedTime = GetTime() - self.startTime
-            if elapsedTime < 3 then
-                self:SetValue(100 * elapsedTime / 3)
-            else
-                self.startTime = GetTime()
-            end
-        end
-    end)
-    private.memberDiedBar.frame:SetValue(50)
-    if private.db.global.memberDiedBar[private.ACTIVE_EDITMODE_LAYOUT] then
-        private.memberDiedBar.frame:SetPoint(private.db.global.memberDiedBar[private.ACTIVE_EDITMODE_LAYOUT].point,
-            UIParent,
-            private.db.global.memberDiedBar[private.ACTIVE_EDITMODE_LAYOUT].point,
-            private.db.global.memberDiedBar[private.ACTIVE_EDITMODE_LAYOUT].x,
-            private.db.global.memberDiedBar[private.ACTIVE_EDITMODE_LAYOUT].y)
-    else
-        private.memberDiedBar.frame:SetPoint("CENTER", UIParent, "CENTER")
+private.initializeMemberDiedBar = function()
+    if not private.db.global.memberDiedBar then
+        private.db.global.memberDiedBar = {}
     end
-    local name, realm = UnitName("player")
-    local class, classFile, classID = UnitClass("player")
-    local color = C_ClassColor.GetClassColor(classFile)
-    local NameText = C_ColorUtil.WrapTextInColor(name, color)
-    private.memberDiedBar.frame.Text:SetFormattedText("%s %s", NameText, private.getLocalisation("MemberDiedText"))
-    SetupEditModeSettings(private.memberDiedBar.frame)
+    if not private.db.global.memberDiedBar[private.ACTIVE_EDITMODE_LAYOUT] then
+        private.db.global.memberDiedBar[private.ACTIVE_EDITMODE_LAYOUT] = {
+            enabled = true,
+            duration = 3,
+            bgTexture = "Blizzard Dialog Background",
+            barColor = private.diedBarVariables.barColor,
+            texture = "Solid",
+            width = private.diedBarVariables.width,
+            height = private.diedBarVariables.height,
+            x = private.diedBarVariables.position.x,
+            y = private.diedBarVariables.position.y,
+            point = private.diedBarVariables.position.point,
+        }
+    end
+end
+
+LibEditMode:RegisterCallback('enter', function(layoutName)
+    if private.isInitialized then
+        private.memberDiedBar = AceGui:Create("MQOL_DiedBar")
+        private.memberDiedBar.frame:Show()
+        private.memberDiedBar.frame.startTime = GetTime()
+        private.memberDiedBar.frame:SetScript("OnUpdate", function(self, elapsed)
+            if self.startTime then
+                local elapsedTime = GetTime() - self.startTime
+                if elapsedTime < 3 then
+                    self:SetValue(100 * elapsedTime / 3)
+                else
+                    self.startTime = GetTime()
+                end
+            end
+        end)
+        private.memberDiedBar.frame:SetValue(50)
+        if private.db.global.memberDiedBar[private.ACTIVE_EDITMODE_LAYOUT] then
+            private.memberDiedBar.frame:SetPoint(private.db.global.memberDiedBar[private.ACTIVE_EDITMODE_LAYOUT].point,
+                UIParent,
+                private.db.global.memberDiedBar[private.ACTIVE_EDITMODE_LAYOUT].point,
+                private.db.global.memberDiedBar[private.ACTIVE_EDITMODE_LAYOUT].x,
+                private.db.global.memberDiedBar[private.ACTIVE_EDITMODE_LAYOUT].y)
+        else
+            private.memberDiedBar.frame:SetPoint("CENTER", UIParent, "CENTER")
+        end
+        local name, realm = UnitName("player")
+        local class, classFile, classID = UnitClass("player")
+        local color = C_ClassColor.GetClassColor(classFile)
+        local NameText = C_ColorUtil.WrapTextInColor(name, color)
+        private.memberDiedBar.frame.Text:SetFormattedText("%s %s", NameText, private.getLocalisation("MemberDiedText"))
+        SetupEditModeSettings(private.memberDiedBar.frame)
+    end
 end)
 
 LibEditMode:RegisterCallback('exit', function(layoutName)
