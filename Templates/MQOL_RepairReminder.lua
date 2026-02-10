@@ -8,9 +8,15 @@ local variables = {
     text_width = 300,
 }
 
+local function ApplySettings(self)
+    local settings = private.db.global.repairReminder[private.ACTIVE_EDITMODE_LAYOUT]
+    self.frame:ClearAllPoints()
+    self.frame:SetPoint(settings.point, UIParent, settings.point, settings.x, settings.y)
+end
+
 ---@param self MQOL_RepairReminder
 local function OnAcquire(self)
-
+    ApplySettings(self)
 end
 
 ---@param self MQOL_RepairReminder
@@ -19,16 +25,24 @@ local function OnRelease(self)
 end
 
 local function SetDurabilityPercent(self, lowestDurabilityPercent, durabilityPercent)
-    self.frame.Text:SetText(string.format("%s: %.0f%% (avg %.0f%%)", private.getLocalisation("RepairReminderText"), lowestDurabilityPercent * 100, durabilityPercent * 100))
+    self.frame.Text:SetText(string.format("%s: %.0f%% (avg %.0f%%)", private.getLocalisation("RepairReminderText"),
+        lowestDurabilityPercent * 100, durabilityPercent * 100))
 end
 
 
 
 local function Constructor()
     local count = AceGUI:GetNextWidgetNum(Type)
-    local frame = CreateFrame("Frame", "MQOL_RepairReminder_" .. count,  UIParent)
+    local frame = CreateFrame("Frame", "MQOL_RepairReminder_" .. count, UIParent)
     frame:SetSize(variables.text_width, variables.text_height)
-    frame:SetPoint("CENTER", UIParent, "CENTER")
+    if private.db.global.repairReminder[private.ACTIVE_EDITMODE_LAYOUT] then
+        frame:SetPoint(private.db.global.repairReminder[private.ACTIVE_EDITMODE_LAYOUT].point, UIParent,
+            private.db.global.repairReminder[private.ACTIVE_EDITMODE_LAYOUT].point,
+            private.db.global.repairReminder[private.ACTIVE_EDITMODE_LAYOUT].x,
+            private.db.global.repairReminder[private.ACTIVE_EDITMODE_LAYOUT].y)
+    else
+        frame:SetPoint("CENTER", UIParent, "CENTER")
+    end
     frame.Text = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
     frame.Text:SetPoint("CENTER", frame, "CENTER")
     frame.Text:SetText(private.getLocalisation("RepairReminderText"))

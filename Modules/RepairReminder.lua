@@ -6,8 +6,8 @@ local LibEditMode = LibStub("LibEditMode")
 local variables = {
     position = {
         point = 'CENTER',
-        y = 0,
-        x = -50,
+        x = 0,
+        y = -50,
     },
     threshhold = 0.95,
     sound = "None",
@@ -24,16 +24,20 @@ local function HandleReminderSound()
     PlaySoundFile(sound, "Master")
 end
 
-local function ShowRepairReminder(lowestDurabilityPercent, durabilityPercent)
+local function ShowRepairReminder(lowestDurabilityPercent, durabilityPercent, playSound)
     if not private.repairReminder then
         private.repairReminder = CreateRepairReminder()
-        HandleReminderSound()
+        if playSound then
+            HandleReminderSound()
+        end
     end
     private.repairReminder:SetDurabilityPercent(lowestDurabilityPercent, durabilityPercent)
 
     if not private.repairReminder.frame:IsShown() then
         private.repairReminder.frame:Show()
-        HandleReminderSound()
+        if playSound then
+            HandleReminderSound()
+        end
     end
 end
 
@@ -43,9 +47,9 @@ local function HideRepairReminder()
     end
 end
 
-local function ToggleRepairReminder(shouldShow, lowestDurabilityPercent, durabilityPercent)
+local function ToggleRepairReminder(shouldShow, lowestDurabilityPercent, durabilityPercent, playSound)
     if shouldShow then
-        ShowRepairReminder(lowestDurabilityPercent, durabilityPercent)
+        ShowRepairReminder(lowestDurabilityPercent, durabilityPercent, playSound)
     else
         HideRepairReminder()
     end
@@ -195,7 +199,7 @@ end
 
 LibEditMode:RegisterCallback('enter', function(layoutName)
     if private.isInitialized then
-        ToggleRepairReminder(true, 0.8, 0.85)
+        ToggleRepairReminder(true, 0.8, 0.85, false)
         SetupEditModeSettings(private.repairReminder.frame)
     end
 end)
