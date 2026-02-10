@@ -7,7 +7,7 @@ local variables = {
     position = {
         point = 'CENTER',
         y = 0,
-        x = 0,
+        x = -50,
     },
     threshhold = 0.95,
     sound = "None",

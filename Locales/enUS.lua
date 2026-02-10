@@ -3,13 +3,7 @@ local AceLocale = LibStub ('AceLocale-3.0')
 local L = AceLocale:NewLocale(appName, "enUS", true)
 
 if L then
-    L["AccessOptionsMessage"] = "Access the options via /mplusqol"
-    L["RepairReminderText"] = "Repair!"
-    L["repairReminderSoundDescription"] = "Sound played when you first enter a resting area and your durability is below the threshold."
-    L["repairReminderSound"] = "Repair Reminder Sound"
-    L["enableRepairReminder"] = "Enable Repair Reminder"
-    L["enableRepairReminderDescription"] = "Show a reminder when you enter a resting area and your durability is below the threshold."
-    L["disableInitialMessage"] = "Disable Initial Message"
+    L["AccessOptionsMessage"] = "Access the options via /mplusqol" L["disableInitialMessage"] = "Disable Initial Message"
     L["disableInitialMessageDescription"] = "Disable the message that is shown when you first install the addon, which tells you how to access the options."
     L["addonOptions"] = "M+ QoL Options"
     L["MemberDiedBar"] = "Member Died Bar"
@@ -21,8 +15,6 @@ if L then
     L["resurrectionReminderSound"] = "Resurrection Reminder Sound"
     L["resurrectionReminderSoundDescription"] = "Sound played when you have an incoming resurrection."
 
-    L["repairReminderThreshold"] = "Repair Reminder Threshold"
-    L["repairReminderThresholdDescription"] = "The durability percentage at which the repair reminder will be shown when you enter a resting area."
     -- edit mode settings
     L["expandTextureSettings"] = "Expand Texture Settings"
     L["collapseTextureSettings"] = "Collapse Texture Settings"
@@ -44,11 +36,22 @@ if L then
     L["deathReminderTexture"] = "Death Reminder Bar Texture"
     L["deathReminderTextureDescription"] = "The texture of the death reminder bar."
 
-    --brez timer
+    -- brez timer
     L["BrezTimer"] = "Battleress"
     L["BrezNextIn"] = "Next In"
     L["EnableBrezTimer"] = "Enable Brez Timer"
     L["EnableBrezTimerDescription"] = "Show a timer for battle ressurections in Mythic+ dungeons and raids."
+
+    -- repair reminder
+    L["RepairReminder"] = "Repair Reminder"
+    L["RepairReminderText"] = "Repair!"
+    L["repairReminderSoundDescription"] = "Sound played when you first enter a resting area and your durability is below the threshold."
+    L["repairReminderSound"] = "Repair Reminder Sound"
+    L["enableRepairReminder"] = "Enable Repair Reminder"
+    L["enableRepairReminderDescription"] = "Show a reminder when you enter a resting area and your durability is below the threshold."
+    L["repairReminderThreshhold"] = "Repair Reminder Threshold"
+    L["repairReminderThreshholdDescription"] = "The durability percentage at which the repair reminder will be shown when you enter a resting area."
+    
     
     private.localisation = L
 end
