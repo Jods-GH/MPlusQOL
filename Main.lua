@@ -65,6 +65,9 @@ function private.Addon:SlashCommand(msg) -- called when slash command is used
     elseif msg == "testdeath" then
         private.Addon:UNIT_DIED(nil, UnitGUID("player"))
         return
+    elseif msg == "testbrez" then
+        private.testResurrectionReminder()
+        return
     end
     AceConfigDialog:Open(appName)
 end

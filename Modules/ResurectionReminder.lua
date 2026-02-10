@@ -45,11 +45,12 @@ function private.Addon:INCOMING_RESURRECT_CHANGED(event, unit)
         ToggleResurrectionReminder(false)
         return
     end
-    if private.db.profile.resurrectionReminderSound then
-        PlaySoundFile(SharedMedia:Fetch("sound", private.db.profile.resurrectionReminderSound), "Master")
-    end
     ToggleResurrectionReminder(true)
 end
+
+private.testResurrectionReminder = (function()
+    ToggleResurrectionReminder(true)
+end)
 
 function private.Addon:PLAYER_ALIVE(event)
     ToggleResurrectionReminder(false)

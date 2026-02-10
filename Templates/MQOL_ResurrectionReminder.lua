@@ -21,7 +21,7 @@ end
 
 local function Constructor()
     local count = AceGUI:GetNextWidgetNum(Type)
-    local frame = CreateFrame("Frame", "MQOL_ResurrectionReminder_" .. count)
+    local frame = CreateFrame("Frame", "MQOL_ResurrectionReminder_" .. count, UIParent)
     frame:SetSize(variables.icon_width, variables.icon_height)
     frame:SetPoint("CENTER", UIParent, "CENTER")
     frame.Icon = frame:CreateTexture(nil, "OVERLAY")
