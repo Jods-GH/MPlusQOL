@@ -2,6 +2,7 @@ local appName, private = ...
 local AceGui = LibStub("AceGUI-3.0")
 local LibEditMode = LibStub("LibEditMode")
 local SharedMedia = LibStub("LibSharedMedia-3.0")
+local CustomNames = C_AddOns.IsAddOnLoaded("CustomNames") and LibStub("CustomNames")
 
 function private.Addon:UNIT_DIED(event, unitGUID)
     if not private.db.global.memberDiedBar[private.ACTIVE_EDITMODE_LAYOUT].enabled then
@@ -261,6 +262,9 @@ LibEditMode:RegisterCallback('enter', function(layoutName)
             private.memberDiedBar.frame:SetPoint("CENTER", UIParent, "CENTER")
         end
         local name, realm = UnitName("player")
+        if CustomNames then
+            name, realm = CustomNames.UnitName("player")
+        end
         local class, classFile, classID = UnitClass("player")
         local color = C_ClassColor.GetClassColor(classFile)
         local NameText = C_ColorUtil.WrapTextInColor(name, color)

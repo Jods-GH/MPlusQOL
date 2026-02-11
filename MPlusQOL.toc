@@ -6,7 +6,7 @@
 ## Author: Jods
 ## X-Curse-Project-ID: 
 ## X-Wago-ID: 
-## OptionalDeps: Ace3
+## OptionalDeps: Ace3, CustomNames
 ## AddonCompartmentFunc: MPlusQOL_AddonCompartmentFunction
 ## IconTexture: Interface\AddOns\MPlusQOL\Files\MPlusQOLLogo.tga
 ## Category: Other

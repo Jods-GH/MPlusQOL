@@ -1,6 +1,8 @@
 local addonName, private = ...
 local AceGUI = LibStub("AceGUI-3.0")
 local SharedMedia = LibStub("LibSharedMedia-3.0")
+local CustomNames = C_AddOns.IsAddOnLoaded("CustomNames") and LibStub("CustomNames")
+
 local Type = "MQOL_DiedBar"
 local Version = 1
 private.diedBarVariables = {
@@ -71,11 +73,15 @@ end
 local function SetGUIDAndStartTimer(widget, unitGUID)
     local name, realm = UnitNameFromGUID(unitGUID)
     local class, classFile, classID = UnitClassFromGUID(unitGUID)
+    if CustomNames then
+        local unitToken = UnitTokenFromGUID(unitGUID)
+        name, realm = CustomNames.UnitName(unitToken)
+    end
     widget.frame.startTime = GetTime()
+    local duration = private.db.global.memberDiedBar[private.ACTIVE_EDITMODE_LAYOUT].duration or private.diedBarVariables.duration
     widget.frame:SetScript("OnUpdate", function(self, elapsed)
         if self.startTime then
             local elapsedTime = GetTime() - self.startTime
-            local duration = private.db.global.memberDiedBar[private.ACTIVE_EDITMODE_LAYOUT].duration or private.diedBarVariables.duration
             if elapsedTime < duration then
                 self:SetValue(100 * elapsedTime / duration)
             else
