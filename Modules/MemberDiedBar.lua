@@ -7,8 +7,7 @@ function private.Addon:UNIT_DIED(event, unitGUID)
     if not private.db.global.memberDiedBar[private.ACTIVE_EDITMODE_LAYOUT].enabled then
         return
     end
-    local isInGroup = IsGUIDInGroup(unitGUID)
-    if issecretvalue(unitGUID) or not isInGroup and not UnitIsUnit(UnitNameFromGUID(unitGUID), "player") then
+    if issecretvalue(unitGUID) or not IsGUIDInGroup(unitGUID) and not UnitIsUnit(UnitTokenFromGUID(unitGUID), "player") then
         return
     end
     local widget = AceGui:Create("MQOL_DiedBar")
