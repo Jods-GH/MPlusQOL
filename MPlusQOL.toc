@@ -4,8 +4,8 @@
 ## Notes: A multitude of Qol improvements for M+ Dungeons.
 ## SavedVariables: MPlusQOL
 ## Author: Jods
-## X-Curse-Project-ID: 
-## X-Wago-ID: 
+## X-Curse-Project-ID: 1459747
+## X-Wago-ID: rN4kYyGD
 ## OptionalDeps: Ace3, CustomNames
 ## AddonCompartmentFunc: MPlusQOL_AddonCompartmentFunction
 ## IconTexture: Interface\AddOns\MPlusQOL\Files\MPlusQOLLogo.tga
