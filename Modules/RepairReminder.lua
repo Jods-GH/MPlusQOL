@@ -205,7 +205,9 @@ LibEditMode:RegisterCallback('enter', function(layoutName)
 end)
 
 LibEditMode:RegisterCallback('exit', function(layoutName)
-    if private.isInitialized then
+    if private.isInitialized and IsResting() then
         private.CheckForRepair()
+    else
+        ToggleRepairReminder(false)
     end
 end)
