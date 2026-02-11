@@ -5,10 +5,16 @@ private.options = {
   name = private.getLocalisation("addonOptions"),
   type = "group",
   args = {
+      editModeHint = {
+      name = private.getLocalisation("editModeHint"),
+      order = 0,
+      width = "full",
+      type = "description",
+    },
     disableInitialMessage = {
       name = private.getLocalisation("disableInitialMessage"),
       desc = private.getLocalisation("disableInitialMessageDescription"),
-      order = 0,
+      order = 10,
       width = "full",
       type = "toggle",
       set = function(info, val)

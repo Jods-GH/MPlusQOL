@@ -3,17 +3,19 @@ local AceLocale = LibStub ('AceLocale-3.0')
 local L = AceLocale:NewLocale(appName, "enUS", true)
 
 if L then
-    L["AccessOptionsMessage"] = "Access the options via /mplusqol" L["disableInitialMessage"] = "Disable Initial Message"
+    L["AccessOptionsMessage"] = "Access the options via the editmode" 
+    L["disableInitialMessage"] = "Disable Initial Message"
     L["disableInitialMessageDescription"] = "Disable the message that is shown when you first install the addon, which tells you how to access the options."
     L["addonOptions"] = "M+ QoL Options"
     L["MemberDiedBar"] = "Member Died Bar"
     L["enableMemberDiedBar"] = "Enable Member Died Bar"
     L["enableMemberDiedBarDescription"] = "Show a reminder when you or a group member dies."
-    L["MemberDiedText"] = "= Noob"
+    L["MemberDiedText"] = "died"
     L["enableResurrectionReminder"] = "Enable Resurrection Reminder"
     L["enableResurrectionReminderDescription"] = "Show a reminder when you have an incoming resurrection."
     L["resurrectionReminderSound"] = "Resurrection Reminder Sound"
     L["resurrectionReminderSoundDescription"] = "Sound played when you have an incoming resurrection."
+    L["editModeHint"] = "Most of the options are accessed via the edit mode."
 
     -- edit mode settings
     L["expandTextureSettings"] = "Expand Texture Settings"
