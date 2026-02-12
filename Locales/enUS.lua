@@ -37,8 +37,8 @@ if L then
     L["deathReminderBackgroundTextureDescription"] = "The background texture of the death reminder bar."
     L["deathReminderTexture"] = "Death Reminder Bar Texture"
     L["deathReminderTextureDescription"] = "The texture of the death reminder bar."
-    L["deathReminderSound"] = "Death Reminder Sound"
-    L["deathReminderSoundDescription"] = "Sound played when you or a group member dies."
+    L["memberDiedSound"] = "Death Reminder Sound"
+    L["memberDiedSoundDescription"] = "Sound played when you or a group member dies."
 
     -- brez timer
     L["BrezTimer"] = "Battleress"
