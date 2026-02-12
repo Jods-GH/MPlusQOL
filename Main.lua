@@ -20,6 +20,7 @@ function private.Addon:OnInitialize()
     private.Addon:RegisterEvent("ZONE_CHANGED_NEW_AREA")
     private.Addon:RegisterEvent("ENCOUNTER_START")
     private.Addon:RegisterEvent("ENCOUNTER_END")
+    private.Addon:RegisterEvent("UNIT_AURA")
 
     private.db = LibStub("AceDB-3.0"):New("MPlusQOL", private.OptionDefaults, true) -- Generates Saved Variables with default Values (if they don't already exist)
     local OptionTable = {

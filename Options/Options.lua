@@ -62,6 +62,19 @@ private.options = {
             .resurrectionReminderSound --Sets value of toggles depending on SavedVariables
       end
     },
+    enableEatingReminder = {
+      name = private.getLocalisation("enableEatingReminder"),
+      order = 40,
+      width = "full",
+      type = "toggle",
+      set = function(info, val)
+        private.db.profile.enableEatingReminder = val
+      end, --Sets value of SavedVariables depending on toggles
+      get = function(info)
+        return private.db.profile
+            .enableEatingReminder --Sets value of toggles depending on SavedVariables
+      end
+    },
 
   }
 }

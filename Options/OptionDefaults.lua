@@ -9,5 +9,6 @@ private.OptionDefaults = {
 		enableDeathReminder = true,
 		enableResurrectionReminder = true,
 		resurrectionReminderSound = "None",
+		enableEatingReminder = false,
 	}
 }

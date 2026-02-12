@@ -56,6 +56,9 @@ if L then
     L["repairReminderThreshhold"] = "Repair Reminder Threshold"
     L["repairReminderThreshholdDescription"] = "The durability percentage at which the repair reminder will be shown when you enter a resting area."
     
-    
+    -- eating reminder
+    L["enableEatingReminder"] = "Enable Eating Reminder"
+    L["enableEatingReminderDescription"] = "Show a message in chat when you eat or drink something. This will only work outside of Chat Lockdown so it won't work during an M+ key."
+    L["eatingReminderMessage"] = "Eating food!"
     private.localisation = L
 end

@@ -59,6 +59,7 @@ Modules\ResurectionReminder.lua
 Modules\RepairReminder.lua
 Modules\MemberDiedBar.lua
 Modules\BrezTimer.lua
+Modules\EatingReminder.lua
 
 
 
