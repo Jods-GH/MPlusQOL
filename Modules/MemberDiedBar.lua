@@ -24,6 +24,12 @@ function private.Addon:UNIT_DIED(event, unitGUID)
     widget:SetGUIDAndStartTimer(unitGUID)
     widget.frame:Show()
     HandleMemberDiedSound()
+    local session = C_DamageMeter.GetCombatSessionFromType(1, 9) -- current session deaths
+    if session.combatSources and #session.combatSources > 0 then
+        widget.frame:SetScript("OnMouseDown" , function(self, button)
+            OpenDeathRecapUI(session.combatSources[1].deathRecapID) -- most recent death will be this one
+        end)
+    end
 end
 
 local function onPositionChanged(frame, layoutName, point, x, y)

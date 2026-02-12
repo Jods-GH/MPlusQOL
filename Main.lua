@@ -75,6 +75,16 @@ function private.Addon:SlashCommand(msg) -- called when slash command is used
     elseif msg == "testbrez" then
         private.testResurrectionReminder()
         return
+    elseif msg == "testrecap" then
+        local session = C_DamageMeter.GetCombatSessionFromType(0, 9)
+
+        for _,source in pairs(session.combatSources) do
+            print(source.name)
+            print(issecretvalue(source.name))
+            print(issecretvalue(source.sourceGUID))
+            print(source.deathRecapID)
+            print(C_DeathRecap.GetRecapLink(source.deathRecapID))
+        end
     end
     AceConfigDialog:Open(appName)
 end
