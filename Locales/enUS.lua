@@ -60,5 +60,12 @@ if L then
     L["enableEatingReminder"] = "Enable Eating Reminder"
     L["enableEatingReminderDescription"] = "Show a message in chat when you eat or drink something. This will only work outside of Chat Lockdown so it won't work during an M+ key."
     L["eatingReminderMessage"] = "Eating food!"
+
+    -- raid buff reminder
+    L["RaidBuffReminder"] = "Raid Buff Reminder"
+    L["enableRaidBuffReminder"] = "Enable Raid Buff Reminder"
+    L["enableRaidBuffReminderDescription"] = "Show a reminder when you are missing your class's raid buff. Inside of lockdown (e.G in M+) it will only show up if the spell would be glowing on your bar"
+    L["raidBuffReminderSizeDescription"] = "The size of the raid buff reminder icon."
+    L["raidBuffReminderSize"] = "Raid Buff Reminder Size"
     private.localisation = L
 end

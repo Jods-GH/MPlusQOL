@@ -21,6 +21,11 @@ function private.Addon:OnInitialize()
     private.Addon:RegisterEvent("ENCOUNTER_START")
     private.Addon:RegisterEvent("ENCOUNTER_END")
     private.Addon:RegisterEvent("UNIT_AURA")
+    private.Addon:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_SHOW")
+    private.Addon:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_HIDE")
+    private.Addon:RegisterEvent("READY_CHECK")
+    private.Addon:RegisterEvent("READY_CHECK_FINISHED")
+    private.Addon:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")
 
     private.db = LibStub("AceDB-3.0"):New("MPlusQOL", private.OptionDefaults, true) -- Generates Saved Variables with default Values (if they don't already exist)
     local OptionTable = {
@@ -43,6 +48,7 @@ function private.Addon:OnEnable()
     private.initializeBrezTimer()
     private.initializeMemberDiedBar()
     private.initializeRepairReminder()
+    private.initializeRaidBuffReminder()
     private.isInitialized = true
 end
 

@@ -7,6 +7,7 @@ LibEditMode:RegisterCallback('layout', function(layoutName)
         private.initializeBrezTimer()
         private.initializeMemberDiedBar()
         private.initializeRepairReminder()
+        private.initializeRaidBuffReminder()
     end
 end)
 
