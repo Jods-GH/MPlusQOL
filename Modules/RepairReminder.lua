@@ -56,7 +56,7 @@ local function ToggleRepairReminder(shouldShow, lowestDurabilityPercent, durabil
 end
 
 function private.CheckForRepair()
-    if not private.db.global.repairReminder[private.ACTIVE_EDITMODE_LAYOUT].enabled then
+    if not private.db or not private.db.global.repairReminder or not private.db.global.repairReminder[private.ACTIVE_EDITMODE_LAYOUT] or not private.db.global.repairReminder[private.ACTIVE_EDITMODE_LAYOUT].enabled then
         return
     end
     local shouldShow = false
