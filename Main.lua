@@ -79,12 +79,13 @@ function private.Addon:SlashCommand(msg) -- called when slash command is used
         local session = C_DamageMeter.GetCombatSessionFromType(0, 9)
 
         for _,source in pairs(session.combatSources) do
-            print(source.name)
-            print(issecretvalue(source.name))
-            print(issecretvalue(source.sourceGUID))
-            print(source.deathRecapID)
+            print("========")
+            DevTools_Dump(source)
             print(C_DeathRecap.GetRecapLink(source.deathRecapID))
+            local recapEvents = C_DeathRecap.GetRecapEvents(source.deathRecapID)
+            DevTool:AddData(recapEvents, "Death recap")
         end
+        return
     end
     AceConfigDialog:Open(appName)
 end

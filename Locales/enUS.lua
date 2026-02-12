@@ -39,6 +39,8 @@ if L then
     L["deathReminderTextureDescription"] = "The texture of the death reminder bar."
     L["memberDiedSound"] = "Death Reminder Sound"
     L["memberDiedSoundDescription"] = "Sound played when you or a group member dies."
+    L["enableDeathInformation"] = "Enable Death Information"
+    L["enableDeathInformationDescription"] = "Shows spell and amount of damage that killed on the death bar if available."
 
     -- brez timer
     L["BrezTimer"] = "Battleress"

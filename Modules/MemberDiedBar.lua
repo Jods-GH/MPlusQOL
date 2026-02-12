@@ -24,12 +24,6 @@ function private.Addon:UNIT_DIED(event, unitGUID)
     widget:SetGUIDAndStartTimer(unitGUID)
     widget.frame:Show()
     HandleMemberDiedSound()
-    local session = C_DamageMeter.GetCombatSessionFromType(1, 9) -- current session deaths
-    if session.combatSources and #session.combatSources > 0 then
-        widget.frame:SetScript("OnMouseDown" , function(self, button)
-            OpenDeathRecapUI(session.combatSources[1].deathRecapID) -- most recent death will be this one
-        end)
-    end
 end
 
 local function onPositionChanged(frame, layoutName, point, x, y)
@@ -253,6 +247,18 @@ local function SetupEditModeSettings(frame)
                 height = 300,
                 values = soundOptions,
             },
+             {
+                name = private.getLocalisation("enableDeathInformation"),
+                desc = private.getLocalisation("enableDeathInformationDescription"),
+                kind = LibEditMode.SettingType.Checkbox,
+                default = true,
+                get = function(layoutName)
+                    return private.db.global.memberDiedBar[layoutName].enableDeathInformation
+                end,
+                set = function(layoutName, value)
+                    private.db.global.memberDiedBar[layoutName].enableDeathInformation = value
+                end,
+            },
         })
         memberDiedBarHasBeenAddedToEditMode = true
     end
@@ -274,6 +280,7 @@ private.initializeMemberDiedBar = function()
             x = private.diedBarVariables.position.x,
             y = private.diedBarVariables.position.y,
             point = private.diedBarVariables.position.point,
+            enableDeathInformation = true,
         }
     end
 end
@@ -318,5 +325,6 @@ end)
 LibEditMode:RegisterCallback('exit', function(layoutName)
     if private.memberDiedBar then
         private.memberDiedBar:Release()
+        private.memberDiedBar = nil
     end
 end)
