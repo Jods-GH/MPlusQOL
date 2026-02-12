@@ -15,6 +15,7 @@ private.diedBarVariables = {
     },
     barColor = CreateColor(1, 0, 0, 1),
     duration = 3,
+    sound = "None",
 }
 
 local function ApplySettings(widget)

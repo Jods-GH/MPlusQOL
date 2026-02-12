@@ -4,6 +4,11 @@ local LibEditMode = LibStub("LibEditMode")
 local SharedMedia = LibStub("LibSharedMedia-3.0")
 local CustomNames = C_AddOns.IsAddOnLoaded("CustomNames") and LibStub("CustomNames")
 
+local function HandleMemberDiedSound()
+    local sound = SharedMedia:Fetch("sound", private.db.global.memberDiedBar[private.ACTIVE_EDITMODE_LAYOUT].sound)
+    PlaySoundFile(sound, "Master")
+end
+
 function private.Addon:UNIT_DIED(event, unitGUID)
     if not private.db.global.memberDiedBar[private.ACTIVE_EDITMODE_LAYOUT].enabled then
         return
@@ -14,6 +19,7 @@ function private.Addon:UNIT_DIED(event, unitGUID)
     local widget = AceGui:Create("MQOL_DiedBar")
     widget:SetGUIDAndStartTimer(unitGUID)
     widget.frame:Show()
+    HandleMemberDiedSound()
 end
 
 local function onPositionChanged(frame, layoutName, point, x, y)
@@ -55,6 +61,16 @@ local function SetupEditModeSettings(frame)
                 isRadio = false,
             })
         end
+
+        local soundOptions = {}
+        for _, sound in ipairs(SharedMedia:List("sound")) do
+            table.insert(soundOptions, {
+                text = sound,
+                value = sound,
+                isRadio = false,
+            })
+        end
+
         local areSizeSettingsExpanded = false
         local areTextureSettingsExpanded = false
         LibEditMode:AddFrameSettings(frame, {
@@ -210,7 +226,23 @@ local function SetupEditModeSettings(frame)
                 hidden = function()
                     return not areTextureSettingsExpanded
                 end,
-            }
+            },
+            {
+                name = private.getLocalisation("memberDiedSound"),
+                desc = private.getLocalisation("memberDiedSoundDescription"),
+                kind = LibEditMode.SettingType.Dropdown,
+
+                get = function(layoutName)
+                    return private.db.global.memberDiedBar[layoutName].sound
+                end,
+                set = function(layoutName, value)
+                    private.db.global.memberDiedBar[layoutName].sound = value
+                    HandleMemberDiedSound()
+                end,
+                default = private.diedBarVariables.sound,
+                height = 300,
+                values = soundOptions,
+            },
         })
         memberDiedBarHasBeenAddedToEditMode = true
     end
