@@ -204,7 +204,11 @@ end
 
 LibEditMode:RegisterCallback('enter', function(layoutName)
     if private.isInitialized then
-        ToggleRaidBuffReminder(getPlayerBuffId())
+        local spellID = getPlayerBuffId()
+        if not spellID then
+            spellID = 1459 -- Arcane Intellect as a default icon for edit mode
+        end
+        ToggleRaidBuffReminder(spellID)
         SetupEditModeSettings(private.raidBuffReminder.frame)
     end
 end)
