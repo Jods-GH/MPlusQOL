@@ -8,11 +8,9 @@ local spells = {
     "455289" -- eating
 }
 local spellNames = {}
-local spellIcons = {}
 for _, spellID in ipairs(spells) do
     local spellInfo = C_Spell.GetSpellInfo(spellID)
     spellNames[spellInfo.name] = true
-    spellIcons[spellInfo.iconID] = true
 end
 
 local FindComChannel = function()
@@ -27,11 +25,20 @@ local FindComChannel = function()
     end
 end
 
-
-local function SendEatingMessage()
-    local channel = FindComChannel()
-    if channel then
-        C_ChatInfo.SendChatMessage(private.getLocalisation("eatingReminderMessage"), channel)
+local eatingDebounce = 0
+local EATING_DEBOUNCE_DURATION = 30 -- seconds
+local activeAuraInstanceIds = {}
+local function SendEatingMessage(auraInstanceID)
+    if activeAuraInstanceIds[auraInstanceID] then
+        return
+    end
+    activeAuraInstanceIds[auraInstanceID] = true
+    if GetTime() - eatingDebounce > EATING_DEBOUNCE_DURATION then
+        local channel = FindComChannel()
+            eatingDebounce = GetTime()
+        if channel then
+            C_ChatInfo.SendChatMessage(private.getLocalisation("eatingReminderMessage"), channel)
+        end
     end
 end
 
@@ -50,9 +57,10 @@ function private.Addon:UNIT_AURA(event, unit, info)
     end
     if info.isFullUpdate then
         for spellName in pairs(spellNames) do
-            local hasBuff = C_UnitAuras.GetAuraDataBySpellName("player", spellName, "HELPFUL") ~= nil
+            local auraData = C_UnitAuras.GetAuraDataBySpellName("player", spellName, "HELPFUL")
+            local hasBuff = auraData ~= nil
             if hasBuff then
-                SendEatingMessage()
+                SendEatingMessage(auraData.auraInstanceID)
                 return
             end
         end
@@ -61,8 +69,8 @@ function private.Addon:UNIT_AURA(event, unit, info)
         for _, auraInfo in pairs(info.addedAuras) do
             if issecretvalue(auraInfo.name) then
                 return
-            elseif auraInfo.isHelpful and (spellNames[auraInfo.name] or spellIcons[auraInfo.icon]) then
-                SendEatingMessage()
+            elseif auraInfo.isHelpful and spellNames[auraInfo.name] then
+                SendEatingMessage(auraInfo.auraInstanceID)
                 return
             end
         end
