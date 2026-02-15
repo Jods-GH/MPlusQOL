@@ -73,7 +73,7 @@ local function shouldRaidBuffReminderBeShown()
         local hasBuffAmount, totalAmount = 0, GetNumGroupMembers() + 1
         for i = 1, GetNumGroupMembers() do
             local unit = IsInRaid() and "raid"..i or "party" .. i
-            if not UnitExists(unit) or not C_Spell.IsSpellInRange(spellID, unit) then
+            if not UnitExists(unit) or UnitIsDeadOrGhost(unit) or not C_Spell.IsSpellInRange(spellID, unit) then
                 totalAmount = totalAmount - 1
             else
                 if issecretvalue(C_UnitAuras.GetAuraDataBySpellName(unit, spellInfo.name, "HELPFUL")) then
