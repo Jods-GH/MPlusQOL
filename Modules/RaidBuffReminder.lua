@@ -130,7 +130,9 @@ end
 
 function private.Addon:UNIT_SPELLCAST_SUCCEEDED(event, unit, _, spellID)
     if unit == "player" and raidbuffs[spellID] then
-        ToggleRaidBuffReminder(shouldRaidBuffReminderBeShown())
+        C_Timer.After(1, function() -- we should instead listen to UNIT_AURA but this should be good enough and is less expensive than checking auras every time they change
+            ToggleRaidBuffReminder(shouldRaidBuffReminderBeShown())
+        end)
     end
 end
 
