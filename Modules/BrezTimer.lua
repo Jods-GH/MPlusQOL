@@ -41,6 +41,10 @@ local function ToggleBrezTimer(shouldShow)
     end
 end
 
+local function shouldBrezTimerBeShown()
+    return C_ChallengeMode.IsChallengeModeActive() or C_InstanceEncounter.IsEncounterInProgress()
+end
+
 
 function private.Addon:CHALLENGE_MODE_START(event)
     ToggleBrezTimer(true)
@@ -55,11 +59,7 @@ function private.Addon:ENCOUNTER_START(event, encounterID, encounterName, diffic
 end
 
 function private.Addon:ENCOUNTER_END(event, encounterID, encounterName, difficultyID, groupSize)
-    ToggleBrezTimer(false)
-end
-
-local function shouldBrezTimerBeShown()
-    return C_ChallengeMode.IsChallengeModeActive() or C_InstanceEncounter.IsEncounterInProgress()
+    ToggleBrezTimer(shouldBrezTimerBeShown())
 end
 
 function private.Addon:ZONE_CHANGED_NEW_AREA(event)
