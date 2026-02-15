@@ -20,9 +20,11 @@ function private.Addon:UNIT_DIED(event, unitGUID)
     if not UnitInParty(unit) and not UnitInRaid(unit) and not UnitIsUnit(unit, "player") then
         return
     end
-    local widget = AceGui:Create("MQOL_DiedBar")
-    widget:SetGUIDAndStartTimer(unitGUID)
-    widget.frame:Show()
+    if not private.activeMemberDiedBar then
+        private.activeMemberDiedBar = AceGui:Create("MQOL_DiedBar")
+    end
+    private.activeMemberDiedBar:SetGUIDAndStartTimer(unitGUID)
+    private.activeMemberDiedBar.frame:Show()
     HandleMemberDiedSound()
 end
 

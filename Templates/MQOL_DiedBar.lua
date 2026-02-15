@@ -89,6 +89,7 @@ local function SetGUIDAndStartTimer(widget, unitGUID)
                 self:SetValue(100 * elapsedTime / duration)
             else
                 widget:Release()
+                private.activeMemberDiedBar = nil
             end
         end
     end)
