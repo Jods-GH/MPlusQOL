@@ -289,37 +289,39 @@ end
 
 LibEditMode:RegisterCallback('enter', function(layoutName)
     if private.isInitialized then
-        private.memberDiedBar = AceGui:Create("MQOL_DiedBar")
-        private.memberDiedBar.frame:Show()
-        private.memberDiedBar.frame.startTime = GetTime()
-        private.memberDiedBar.frame:SetScript("OnUpdate", function(self, elapsed)
-            if self.startTime then
-                local elapsedTime = GetTime() - self.startTime
-                if elapsedTime < 3 then
-                    self:SetValue(100 * elapsedTime / 3)
-                else
-                    self.startTime = GetTime()
+        if not private.memberDiedBar then
+            private.memberDiedBar = AceGui:Create("MQOL_DiedBar")
+            private.memberDiedBar.frame:Show()
+            private.memberDiedBar.frame.startTime = GetTime()
+            private.memberDiedBar.frame:SetScript("OnUpdate", function(self, elapsed)
+                if self.startTime then
+                    local elapsedTime = GetTime() - self.startTime
+                    if elapsedTime < 3 then
+                        self:SetValue(100 * elapsedTime / 3)
+                    else
+                        self.startTime = GetTime()
+                    end
                 end
+            end)
+            private.memberDiedBar.frame:SetValue(50)
+            if private.db.global.memberDiedBar[private.ACTIVE_EDITMODE_LAYOUT] then
+                private.memberDiedBar.frame:SetPoint(private.db.global.memberDiedBar[private.ACTIVE_EDITMODE_LAYOUT].point,
+                    UIParent,
+                    private.db.global.memberDiedBar[private.ACTIVE_EDITMODE_LAYOUT].point,
+                    private.db.global.memberDiedBar[private.ACTIVE_EDITMODE_LAYOUT].x,
+                    private.db.global.memberDiedBar[private.ACTIVE_EDITMODE_LAYOUT].y)
+            else
+                private.memberDiedBar.frame:SetPoint("CENTER", UIParent, "CENTER")
             end
-        end)
-        private.memberDiedBar.frame:SetValue(50)
-        if private.db.global.memberDiedBar[private.ACTIVE_EDITMODE_LAYOUT] then
-            private.memberDiedBar.frame:SetPoint(private.db.global.memberDiedBar[private.ACTIVE_EDITMODE_LAYOUT].point,
-                UIParent,
-                private.db.global.memberDiedBar[private.ACTIVE_EDITMODE_LAYOUT].point,
-                private.db.global.memberDiedBar[private.ACTIVE_EDITMODE_LAYOUT].x,
-                private.db.global.memberDiedBar[private.ACTIVE_EDITMODE_LAYOUT].y)
-        else
-            private.memberDiedBar.frame:SetPoint("CENTER", UIParent, "CENTER")
+            local name, realm = UnitName("player")
+            if CustomNames then
+                name, realm = CustomNames.UnitName("player")
+            end
+            local class, classFile, classID = UnitClass("player")
+            local color = C_ClassColor.GetClassColor(classFile)
+            local NameText = C_ColorUtil.WrapTextInColor(name, color)
+            private.memberDiedBar.frame.Text:SetFormattedText("%s %s", NameText, private.getLocalisation("MemberDiedText"))
         end
-        local name, realm = UnitName("player")
-        if CustomNames then
-            name, realm = CustomNames.UnitName("player")
-        end
-        local class, classFile, classID = UnitClass("player")
-        local color = C_ClassColor.GetClassColor(classFile)
-        local NameText = C_ColorUtil.WrapTextInColor(name, color)
-        private.memberDiedBar.frame.Text:SetFormattedText("%s %s", NameText, private.getLocalisation("MemberDiedText"))
         SetupEditModeSettings(private.memberDiedBar.frame)
     end
 end)
