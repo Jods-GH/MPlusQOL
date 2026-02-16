@@ -8,6 +8,7 @@ LibEditMode:RegisterCallback('layout', function(layoutName)
         private.initializeMemberDiedBar()
         private.initializeRepairReminder()
         private.initializeRaidBuffReminder()
+        private.initializePrivateAuraAnchor()
     end
 end)
 

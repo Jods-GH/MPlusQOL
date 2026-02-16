@@ -49,6 +49,7 @@ function private.Addon:OnEnable()
     private.initializeMemberDiedBar()
     private.initializeRepairReminder()
     private.initializeRaidBuffReminder()
+    private.initializePrivateAuraAnchor()
     private.isInitialized = true
 end
 

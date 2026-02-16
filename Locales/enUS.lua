@@ -69,5 +69,14 @@ if L then
     L["enableRaidBuffReminderDescription"] = "Show a reminder when you are missing your class's raid buff. Inside of lockdown (e.G in M+) it will only show up if the spell would be glowing on your bar"
     L["raidBuffReminderSizeDescription"] = "The size of the raid buff reminder icon."
     L["raidBuffReminderSize"] = "Raid Buff Reminder Size"
+
+    -- private aura anchor
+    L["PrivateAuraAnchor"] = "Private Aura Anchor"
+    L["iconMarginDescription"] = "The space between the icons."
+    L["iconMargin"] = "Icon Margin"
+    L["privateAuraAnchorSizeDescription"] = "The size of the private aura Icons."
+    L["privateAuraAnchorSize"] = "Private Aura Icon Size"
+    L["EnablePrivateAuraAnchorDescription"] = "Positioning for private auras."
+    L["EnablePrivateAuraAnchor"] = "Enable Private Aura Positioning"
     private.localisation = L
 end
