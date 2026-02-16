@@ -3,9 +3,9 @@ local AceGui = LibStub("AceGUI-3.0")
 local LibEditMode = LibStub("LibEditMode")
 local variables = {
     position = {
-        x = 428,
-        point = "BOTTOM",
-        y = 22,
+        x = 240,
+        point = "CENTER",
+        y = -220,
     },
 }
 private.privateAuraAnchorIDs = {}
