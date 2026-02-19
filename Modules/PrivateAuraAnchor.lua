@@ -49,6 +49,7 @@ local function handleAnchor()
                     offsetX = offset,
                     offsetY = 0
                 },
+                borderScale = -100,
                 iconWidth = private.privateAuraAnchorFrame:GetWidth(),
                 iconHeight = private.privateAuraAnchorFrame:GetHeight()
             }
