@@ -63,10 +63,10 @@ local function shouldRaidBuffReminderBeShown()
     end
     local spellInfo = C_Spell.GetSpellInfo(spellID)
     if not issecretvalue(spellInfo) 
-    and not C_RestrictedActions.IsAddOnRestrictionActive(0) -- combat
-    and not C_RestrictedActions.IsAddOnRestrictionActive(1) -- encounter
-    and not C_RestrictedActions.IsAddOnRestrictionActive(2) -- ChallengeMode
-    and not C_RestrictedActions.IsAddOnRestrictionActive(3) -- PvP
+    -- and not C_RestrictedActions.IsAddOnRestrictionActive(0) -- combat
+    -- and not C_RestrictedActions.IsAddOnRestrictionActive(1) -- encounter
+    -- and not C_RestrictedActions.IsAddOnRestrictionActive(2) -- ChallengeMode
+    -- and not C_RestrictedActions.IsAddOnRestrictionActive(3) -- PvP
     
     then 
         --print("Checking for raid buff " .. spellInfo.name .. " (" .. spellID .. ")")
