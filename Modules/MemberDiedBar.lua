@@ -206,7 +206,12 @@ local function SetupEditModeSettings(frame)
                     return CreateColor(color.r, color.g, color.b, color.a)
                 end,
                 set = function(layoutName, value)
-                    private.db.global.memberDiedBar[layoutName].barColor = value:GetRGBA()
+                    private.db.global.memberDiedBar[layoutName].barColor = {
+                        r = value.r,
+                        g = value.g,
+                        b = value.b,
+                        a = value.a,
+                    }
                     private.memberDiedBar:ApplySettings()
                 end,
                 default = private.diedBarVariables.barColor,
