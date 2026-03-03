@@ -27,7 +27,7 @@ end
 private.REMAINING_SATED_AFTER_LUST = 560
 local lastLustActivationTime = GetTime()
 local function TriggerLust(self, remainingTime)
-    if remainingTime > private.REMAINING_SATED_AFTER_LUST then
+    if remainingTime and remainingTime > private.REMAINING_SATED_AFTER_LUST then
         self.frame.Cooldown:SetCooldownDuration(remainingTime - private.REMAINING_SATED_AFTER_LUST)
         C_Timer.After(remainingTime - private.REMAINING_SATED_AFTER_LUST, function()
             self.frame.Cooldown:SetCooldownDuration(private.REMAINING_SATED_AFTER_LUST)
@@ -37,12 +37,11 @@ local function TriggerLust(self, remainingTime)
             lastLustActivationTime = GetTime()
             private.HandleLustSound()
         end
-    else
-        self.frame.Cooldown:SetCooldownDuration(remainingTime)
-    end
-    if remainingTime == 0 then
+    elseif not remainingTime or remainingTime == 0 then
         self.frame.Cooldown:Clear()
         private.StopGlow(self.frame)
+    else
+        self.frame.Cooldown:SetCooldownDuration(remainingTime)
     end
 end
 
