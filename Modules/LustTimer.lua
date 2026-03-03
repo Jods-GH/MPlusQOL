@@ -17,7 +17,6 @@ local lustIds = {
     [95809] = true,          -- Hunter Pet Insanity
     [160455] = true, [264689] = true, -- Hunter Pet Fatigued
     [390435] = true,         -- Exhaustion
-    [1459] = true, -- testing
 }
 
 local activeLustTimerInstanceID = nil
