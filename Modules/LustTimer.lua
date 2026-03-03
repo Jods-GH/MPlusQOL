@@ -59,6 +59,11 @@ function private.LustTimer:UNIT_AURA(event, unit, updateInfo)
             for _, auraInstanceId in pairs (updateInfo.updatedAuraInstanceIDs) do
                 if auraInstanceId == activeLustTimerInstanceID then
                     local auraData = C_UnitAuras.GetAuraDataByAuraInstanceID("player", auraInstanceId)
+                    if not auraData or auraData.expirationTime == nil then
+                        private.lustTimer:TriggerLust(0)
+                        activeLustTimerInstanceID = nil
+                        return
+                    end
                     private.lustTimer:TriggerLust(auraData.expirationTime - GetTime())
                 end
             end
