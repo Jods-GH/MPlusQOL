@@ -20,8 +20,7 @@ local lustIds = {
 }
 
 local activeLustTimerInstanceID = nil
----comment
----@param event any
+---@param event Event
 ---@param unit UnitId
 ---@param updateInfo UnitAuraUpdateInfo
 function private.LustTimer:UNIT_AURA(event, unit, updateInfo)
@@ -48,17 +47,6 @@ function private.LustTimer:UNIT_AURA(event, unit, updateInfo)
             end
         end
     else
-        if updateInfo.addedAuras then
-            for _, aura in pairs (updateInfo.addedAuras) do
-                if not issecretvalue(aura.spellId) then
-                    if lustIds[aura.spellId] then
-                        private.lustTimer:TriggerLust(aura.expirationTime - GetTime())
-                        activeLustTimerInstanceID = aura.auraInstanceID
-                        return
-                    end
-                end
-            end
-        end
         if updateInfo.removedAuraInstanceIDs then
             for _, auraInstanceId in pairs (updateInfo.removedAuraInstanceIDs) do
                 if auraInstanceId == activeLustTimerInstanceID then
@@ -72,6 +60,17 @@ function private.LustTimer:UNIT_AURA(event, unit, updateInfo)
                 if auraInstanceId == activeLustTimerInstanceID then
                     local auraData = C_UnitAuras.GetAuraDataByAuraInstanceID("player", auraInstanceId)
                     private.lustTimer:TriggerLust(auraData.expirationTime - GetTime())
+                end
+            end
+        end
+        if updateInfo.addedAuras then
+            for _, aura in pairs (updateInfo.addedAuras) do
+                if not issecretvalue(aura.spellId) then
+                    if lustIds[aura.spellId] then
+                        private.lustTimer:TriggerLust(aura.expirationTime - GetTime())
+                        activeLustTimerInstanceID = aura.auraInstanceID
+                        return
+                    end
                 end
             end
         end
