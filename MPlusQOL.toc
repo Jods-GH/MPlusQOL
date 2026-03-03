@@ -40,6 +40,7 @@ Locales\Locales.lua
 
 # Util
 Util\EditMode.lua
+Util\Glow.lua
 
 # Options
 Options\OptionDefaults.lua
@@ -52,6 +53,7 @@ Templates\MQOL_ResurrectionReminder.lua
 Templates\MQOL_BrezTimer.lua
 Templates\MQOL_RaidBuffReminder.lua
 Templates\MQOL_PrivateAuraAnchor.lua
+Templates\MQOL_LustTimer.lua
 
 # Main logic
 Main.lua
@@ -64,6 +66,7 @@ Modules\BrezTimer.lua
 Modules\EatingReminder.lua
 Modules\RaidBuffReminder.lua
 Modules\PrivateAuraAnchor.lua
+Modules\LustTimer.lua
 
 
 

@@ -9,6 +9,7 @@ local variables = {
         y = 22,
     },
 }
+private.BrezTimer = {}
 
 local function CreateBrezTimer()
     local widget = AceGui:Create("MQOL_BrezTimer")
@@ -46,27 +47,27 @@ local function shouldBrezTimerBeShown()
 end
 
 
-function private.Addon:CHALLENGE_MODE_START(event)
+function private.BrezTimer:CHALLENGE_MODE_START(event)
     ToggleBrezTimer(true)
 end
 
-function private.Addon:CHALLENGE_MODE_COMPLETED(event)
+function private.BrezTimer:CHALLENGE_MODE_COMPLETED(event)
     ToggleBrezTimer(false)
 end
 
-function private.Addon:ENCOUNTER_START(event, encounterID, encounterName, difficultyID, groupSize)
+function private.BrezTimer:ENCOUNTER_START(event, encounterID, encounterName, difficultyID, groupSize)
     ToggleBrezTimer(true)
 end
 
-function private.Addon:ENCOUNTER_END(event, encounterID, encounterName, difficultyID, groupSize)
+function private.BrezTimer:ENCOUNTER_END(event, encounterID, encounterName, difficultyID, groupSize)
     ToggleBrezTimer(shouldBrezTimerBeShown())
 end
 
-function private.Addon:ZONE_CHANGED_NEW_AREA(event)
+function private.BrezTimer:ZONE_CHANGED_NEW_AREA(event)
     ToggleBrezTimer(shouldBrezTimerBeShown())
 end
 
-function private.Addon:PLAYER_ENTERING_WORLD(event)
+function private.BrezTimer:PLAYER_ENTERING_WORLD(event)
     ToggleBrezTimer(shouldBrezTimerBeShown())
 end
 

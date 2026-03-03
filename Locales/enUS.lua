@@ -78,5 +78,14 @@ if L then
     L["privateAuraAnchorSize"] = "Private Aura Icon Size"
     L["EnablePrivateAuraAnchorDescription"] = "Positioning for private auras."
     L["EnablePrivateAuraAnchor"] = "Enable Private Aura Positioning"
+
+    --lust timer
+    L["LustTimer"] = "Lust Timer"
+    L["enableLustTimer"] = "Enable Lust Timer"
+    L["enableLustTimerDescription"] = "Show a timer for lust in Mythic+ dungeons and raids."
+    L["lustTimerSize"] = "Lust Timer Size"
+    L["lustTimerSizeDescription"] = "The size of the lust timer icon."
+    L["lustSound"] = "Lust Sound"
+    L["lustSoundDescription"] = "Sound played when lust is activated."
     private.localisation = L
 end

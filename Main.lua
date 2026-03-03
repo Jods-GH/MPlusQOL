@@ -50,6 +50,7 @@ function private.Addon:OnEnable()
     private.initializeRepairReminder()
     private.initializeRaidBuffReminder()
     private.initializePrivateAuraAnchor()
+    private.initializeLustTimer()
     private.isInitialized = true
 end
 
@@ -89,4 +90,39 @@ function private.Addon:SlashCommand(msg) -- called when slash command is used
         return
     end
     AceConfigDialog:Open(appName)
+end
+
+function private.Addon:UNIT_AURA(...)
+    private.EatingReminder:UNIT_AURA(...)
+    private.LustTimer:UNIT_AURA(...)
+end
+
+function private.Addon:CHALLENGE_MODE_START(...)
+    private.BrezTimer:CHALLENGE_MODE_START(...)
+    private.LustTimer:CHALLENGE_MODE_START(...)
+end
+
+function private.Addon:CHALLENGE_MODE_COMPLETED(...)
+    private.BrezTimer:CHALLENGE_MODE_COMPLETED(...)
+    private.LustTimer:CHALLENGE_MODE_COMPLETED(...)
+end
+
+function private.Addon:ENCOUNTER_START(...)
+    private.BrezTimer:ENCOUNTER_START(...)
+    private.LustTimer:ENCOUNTER_START(...)
+end
+
+function private.Addon:ENCOUNTER_END(...)
+    private.BrezTimer:ENCOUNTER_END(...)
+    private.LustTimer:ENCOUNTER_END(...)
+end
+
+function private.Addon:ZONE_CHANGED_NEW_AREA(...)
+    private.BrezTimer:ZONE_CHANGED_NEW_AREA(...)
+    private.LustTimer:ZONE_CHANGED_NEW_AREA(...)
+end
+
+function private.Addon:PLAYER_ENTERING_WORLD(...)
+    private.BrezTimer:PLAYER_ENTERING_WORLD(...)
+    private.LustTimer:PLAYER_ENTERING_WORLD(...)
 end

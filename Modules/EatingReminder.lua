@@ -1,6 +1,8 @@
 local appName, private = ...
 local AceGui = LibStub("AceGUI-3.0")
 
+private.EatingReminder = {}
+
 local spells = {
     "192002", -- Food and Drink
     "185710", -- Sugar-Crusted Fish Feast
@@ -42,7 +44,7 @@ local function SendEatingMessage(auraInstanceID)
     end
 end
 
-function private.Addon:UNIT_AURA(event, unit, info)
+function private.EatingReminder:UNIT_AURA(event, unit, info)
     if not private.db.profile.enableEatingReminder then
         return
     end
