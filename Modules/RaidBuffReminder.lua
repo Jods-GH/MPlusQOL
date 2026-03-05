@@ -40,7 +40,9 @@ local function HideRaidBuffReminder()
 end
 
 local function ToggleRaidBuffReminder(spellID)
-    if spellID then
+    if not private.db.global.raidBuffReminder[private.ACTIVE_EDITMODE_LAYOUT].enabled then
+        HideRaidBuffReminder()
+    elseif spellID then
         ShowRaidBuffReminder(spellID)
     else
         HideRaidBuffReminder()
@@ -59,6 +61,9 @@ local function shouldRaidBuffReminderBeShown()
     local spellID = getPlayerBuffId()
     if not spellID then
         --print("No raid buff found for class " .. UnitClass("player"))
+        return false
+    end
+    if IsResting() then
         return false
     end
     local spellInfo = C_Spell.GetSpellInfo(spellID)
