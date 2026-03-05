@@ -4,12 +4,12 @@ local SharedMedia = LibStub("LibSharedMedia-3.0")
 local LibEditMode = LibStub("LibEditMode")
 
 local classRaidbuffs = {
-      [8] =  1459,--Arcane Intellect,  
-      [1] =  6673,--"Battle Shout",
-      [5] =  21562,--"Power Word: Fortitude",
-      [11] =  1126,--"Mark of the Wild",
-      [7] =  462854,--"Skyfury",
-      [13] =  364342, -- Blessing of the Bronze
+    [8] = 1459,       --Arcane Intellect,
+    [1] = 6673,       --"Battle Shout",
+    [5] = 21562,      --"Power Word: Fortitude",
+    [11] = 1126,      --"Mark of the Wild",
+    [7] = 462854,     --"Skyfury",
+    [13] = 364342,    -- Blessing of the Bronze
 }
 local raidbuffs = {}
 for classId, spellID in pairs(classRaidbuffs) do
@@ -40,9 +40,7 @@ local function HideRaidBuffReminder()
 end
 
 local function ToggleRaidBuffReminder(spellID)
-    if not private.db.global.raidBuffReminder[private.ACTIVE_EDITMODE_LAYOUT].enabled then
-        HideRaidBuffReminder()
-    elseif spellID then
+    if spellID then
         ShowRaidBuffReminder(spellID)
     else
         HideRaidBuffReminder()
@@ -66,8 +64,11 @@ local function shouldRaidBuffReminderBeShown()
     if IsResting() then
         return false
     end
+    if not private.db.global.raidBuffReminder[private.ACTIVE_EDITMODE_LAYOUT].enabled then
+        return false
+    end
     local spellInfo = C_Spell.GetSpellInfo(spellID)
-    if not issecretvalue(spellInfo) 
+    if not issecretvalue(spellInfo)
     -- and not C_RestrictedActions.IsAddOnRestrictionActive(0) -- combat
     -- and not C_RestrictedActions.IsAddOnRestrictionActive(1) -- encounter
     -- and not C_RestrictedActions.IsAddOnRestrictionActive(2) -- ChallengeMode
@@ -77,7 +78,7 @@ local function shouldRaidBuffReminderBeShown()
         --print("Checking for raid buff " .. spellInfo.name .. " (" .. spellID .. ")")
         local hasBuffAmount, totalAmount = 0, GetNumGroupMembers() + 1
         for i = 1, GetNumGroupMembers() do
-            local unit = IsInRaid() and "raid"..i or "party" .. i
+            local unit = IsInRaid() and "raid" .. i or "party" .. i
             if not UnitExists(unit) or UnitIsDeadOrGhost(unit) or not C_Spell.IsSpellInRange(spellID, unit) then
                 totalAmount = totalAmount - 1
             else
@@ -91,7 +92,7 @@ local function shouldRaidBuffReminderBeShown()
                     end
                 end
             end
-        end      
+        end
         if C_UnitAuras.GetAuraDataBySpellName("player", spellInfo.name, "HELPFUL") then
             hasBuffAmount = hasBuffAmount + 1
         end
@@ -135,9 +136,10 @@ end
 
 function private.Addon:UNIT_SPELLCAST_SUCCEEDED(event, unit, _, spellID)
     if unit == "player" and raidbuffs[spellID] then
-        C_Timer.After(1, function() -- we should instead listen to UNIT_AURA but this should be good enough and is less expensive than checking auras every time they change
-            ToggleRaidBuffReminder(shouldRaidBuffReminderBeShown())
-        end)
+        C_Timer.After(1,
+            function()              -- we should instead listen to UNIT_AURA but this should be good enough and is less expensive than checking auras every time they change
+                ToggleRaidBuffReminder(shouldRaidBuffReminderBeShown())
+            end)
     end
 end
 
