@@ -23,14 +23,11 @@ local activeLustTimerInstanceID = nil
 ---@param event Event
 ---@param unit UnitId
 ---@param updateInfo UnitAuraUpdateInfo
-function private.LustTimer:UNIT_AURA(event, unit, updateInfo)
+function private.LustTimer:UNIT_AURA_PLAYER(event, unit, updateInfo)
     if not private.db.global.lustTimer[private.ACTIVE_EDITMODE_LAYOUT].enabled then
         return
     end
     if not private.lustTimer then
-        return
-    end
-    if not unit == "player" then
         return
     end
     if issecretvalue(updateInfo) then

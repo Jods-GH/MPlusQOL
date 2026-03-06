@@ -44,11 +44,8 @@ local function SendEatingMessage(auraInstanceID)
     end
 end
 
-function private.EatingReminder:UNIT_AURA(event, unit, info)
+function private.EatingReminder:UNIT_AURA_PLAYER(event, unit, info)
     if not private.db.profile.enableEatingReminder then
-        return
-    end
-    if not unit == "player" then
         return
     end
     if C_ChatInfo.InChatMessagingLockdown() then

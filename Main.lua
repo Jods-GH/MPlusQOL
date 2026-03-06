@@ -20,7 +20,7 @@ function private.Addon:OnInitialize()
     private.Addon:RegisterEvent("ZONE_CHANGED_NEW_AREA")
     private.Addon:RegisterEvent("ENCOUNTER_START")
     private.Addon:RegisterEvent("ENCOUNTER_END")
-    private.Addon:RegisterEvent("UNIT_AURA")
+--    private.Addon:RegisterEvent("UNIT_AURA")
     private.Addon:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_SHOW")
     private.Addon:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_HIDE")
     private.Addon:RegisterEvent("READY_CHECK")
@@ -92,9 +92,19 @@ function private.Addon:SlashCommand(msg) -- called when slash command is used
     AceConfigDialog:Open(appName)
 end
 
-function private.Addon:UNIT_AURA(...)
-    private.EatingReminder:UNIT_AURA(...)
-    private.LustTimer:UNIT_AURA(...)
+private.EventFrame = CreateFrame("Frame")
+
+private.EventFrame:RegisterUnitEvent("UNIT_AURA", "player")
+local function OnEvent(self, event, ...)
+    if event == "UNIT_AURA" then
+        private.Addon:UNIT_AURA_PLAYER(event, ...)
+    end
+end
+private.EventFrame:SetScript("OnEvent", OnEvent)
+
+function private.Addon:UNIT_AURA_PLAYER(...)
+    private.EatingReminder:UNIT_AURA_PLAYER(...)
+    private.LustTimer:UNIT_AURA_PLAYER(...)
 end
 
 function private.Addon:CHALLENGE_MODE_START(...)
