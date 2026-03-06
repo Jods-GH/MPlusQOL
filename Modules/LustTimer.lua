@@ -38,6 +38,7 @@ function private.LustTimer:UNIT_AURA_PLAYER(event, unit, updateInfo)
             local auraData = C_UnitAuras.GetPlayerAuraBySpellID(spellId)
             local hasBuff = auraData ~= nil
             if hasBuff then
+                local remainingDuration = auraData.expirationTime - GetTime()
                 private.lustTimer:TriggerLust(remainingDuration)
                 activeLustTimerInstanceID = auraData.auraInstanceID
                 return
