@@ -60,7 +60,6 @@ function private.LustTimer:UNIT_AURA_PLAYER(event, unit, updateInfo)
                     if not auraData or auraData.expirationTime == nil then
                         private.lustTimer:TriggerLust(0)
                         activeLustTimerInstanceID = nil
-                        return
                     end
                     private.lustTimer:TriggerLust(auraData.expirationTime - GetTime())
                 end
