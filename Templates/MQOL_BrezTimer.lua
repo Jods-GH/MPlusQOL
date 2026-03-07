@@ -6,6 +6,7 @@ local Version = 1
 local variables = {
     frame_width = 125,
     frame_height = 35,
+    bgTexture = "Blizzard Dialog Background",
 }
 local greyCol = "FFAAAAAA"
 local redCol = "FFB40000"
@@ -18,9 +19,10 @@ local function GetTexts(charges, timer)
     else
         color = whiteCol
     end
-    local brezText = string.format("|c%s %s: |r |c%s %i |r", greyCol, private.getLocalisation("BrezTimer"), color, charges)
+    local brezText = string.format("|c%s %s: |r |c%s %i |r", greyCol, private.getLocalisation("BrezTimer"), color,
+        charges)
     local timerText = string.format("|c%s %s: |r |c%s %s|r", greyCol, private.getLocalisation("BrezNextIn"), color, timer)
-    return brezText,  timerText
+    return brezText, timerText
 end
 
 -- timer based on https://wago.io/notaraidtool aka http://www.mmo-champion.com/threads/1686033-Weak-Auras-Battle-Res-Monitor-Looking-for-feedback!
@@ -62,7 +64,8 @@ local function StartTimer(widget, isDebug)
                 remainingDuration = FAKE_DURATION_ADDITION - elapsedDuration
                 currentCharges = 1
             end
-            local brezText, nextInText = GetTexts(currentCharges, ("%d:%02d"):format(floor(remainingDuration / 60), mod(remainingDuration, 60)))
+            local brezText, nextInText = GetTexts(currentCharges,
+                ("%d:%02d"):format(floor(remainingDuration / 60), mod(remainingDuration, 60)))
             self.BrezText:SetText(brezText)
             self.NextInText:SetText(nextInText)
         end)
@@ -75,9 +78,31 @@ local function StartTimer(widget, isDebug)
     end
 end
 
+local function ApplySettings(widget)
+    if private.db.global.brezTimer[private.ACTIVE_EDITMODE_LAYOUT] then
+        widget.frame:ClearAllPoints()
+        widget.frame:SetPoint(private.db.global.brezTimer[private.ACTIVE_EDITMODE_LAYOUT].point, UIParent,
+            private.db.global.brezTimer[private.ACTIVE_EDITMODE_LAYOUT].point,
+            private.db.global.brezTimer[private.ACTIVE_EDITMODE_LAYOUT].x,
+            private.db.global.brezTimer[private.ACTIVE_EDITMODE_LAYOUT].y)
+
+        local bgTexture = variables.bgTexture
+        if private.db.global.brezTimer[private.ACTIVE_EDITMODE_LAYOUT].bgTexture then
+            bgTexture = SharedMedia:Fetch("background",
+                private.db.global.brezTimer[private.ACTIVE_EDITMODE_LAYOUT].bgTexture)
+        end
+        widget.frame:SetBackdrop({
+            bgFile = bgTexture,
+            tile = false,
+            tileSize = 32,
+            insets = { left = 0, right = 0, top = 0, bottom = 0 }
+        })
+    end
+end
+
 ---@param self MQOL_BrezTimer
 local function OnAcquire(self)
-
+    ApplySettings(self)
 end
 
 ---@param self MQOL_BrezTimer
@@ -114,7 +139,7 @@ local function Constructor()
     frame.NextInText:SetPoint("TOPLEFT", frame, "LEFT", 5, -5)
     frame.NextInText:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -5, 5)
     frame.NextInText:SetText(private.getLocalisation("BrezNextIn"))
-    
+
 
     ---@class MQOL_BrezTimer : AceGUIWidget
     local widget = {
@@ -125,6 +150,7 @@ local function Constructor()
         frame = frame,
         StartTimer = StartTimer,
         GetTexts = GetTexts,
+        ApplySettings = ApplySettings,
     }
 
     return AceGUI:RegisterAsWidget(widget)

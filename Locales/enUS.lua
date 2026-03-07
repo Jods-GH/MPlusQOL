@@ -47,6 +47,9 @@ if L then
     L["BrezNextIn"] = "Next In"
     L["EnableBrezTimer"] = "Enable Brez Timer"
     L["EnableBrezTimerDescription"] = "Show a timer for battle ressurections in Mythic+ dungeons and raids."
+    L["BrezTimerBackgroundTexture"] = "Brez Timer Background Texture"
+    L["BrezTimerBackgroundTextureDescription"] = "The background texture of the battle resurrection timer."
+
 
     -- repair reminder
     L["RepairReminder"] = "Repair Reminder"

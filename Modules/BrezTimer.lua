@@ -26,6 +26,7 @@ local function ShowBrezTimer()
     if not private.brezTimer.frame:IsShown() then
         private.brezTimer.frame:Show()
     end
+    private.brezTimer:ApplySettings()
 end
 
 local function HideBrezTimer()
@@ -89,7 +90,18 @@ local function SetupEditModeSettings(frame)
         LibEditMode:AddFrame(frame, onPositionChanged, variables.position,
             "MPlus QOL - " .. private.getLocalisation("BrezTimer"))
 
+        local backgroundTextures = {}
+        for _, textureName in ipairs(SharedMedia:List("background")) do
+            local texPath = SharedMedia:Fetch("background", textureName) or ""
+            local display = ("|T%s:16:128|t %s"):format(tostring(texPath), textureName)
+            table.insert(backgroundTextures, {
+                text = display,
+                value = textureName,
+                isRadio = false,
+            })
+        end
 
+        local areTextureSettingsExpanded = false
         LibEditMode:AddFrameSettings(frame, {
             {
                 name = private.getLocalisation("EnableBrezTimer"),
@@ -101,6 +113,39 @@ local function SetupEditModeSettings(frame)
                 end,
                 set = function(layoutName, value)
                     private.db.global.brezTimer[layoutName].enabled = value
+                end,
+            },
+            {
+                name = private.getLocalisation("expandTextureSettings"),
+                expandedLabel = private.getLocalisation("collapseTextureSettings"),
+                collapsedLabel = private.getLocalisation("expandTextureSettings"),
+                desc = private.getLocalisation("textureSettingsDescription"),
+                kind = LibEditMode.SettingType.Expander,
+                default = areTextureSettingsExpanded,
+                get = function()
+                    return areTextureSettingsExpanded
+                end,
+                set = function(_, value)
+                    areTextureSettingsExpanded = value
+                end,
+            },
+            {
+                name = private.getLocalisation("BrezTimerBackgroundTexture"),
+                desc = private.getLocalisation("BrezTimerBackgroundTextureDescription"),
+                kind = LibEditMode.SettingType.Dropdown,
+
+                get = function(layoutName)
+                    return private.db.global.brezTimer[layoutName].bgTexture
+                end,
+                set = function(layoutName, value)
+                    private.db.global.brezTimer[layoutName].bgTexture = value
+                    private.brezTimer:ApplySettings()
+                end,
+                default = "Blizzard Dialog Background",
+                height = 300,
+                values = backgroundTextures,
+                hidden = function()
+                    return not areTextureSettingsExpanded
                 end,
             },
         })
@@ -118,6 +163,8 @@ private.initializeBrezTimer = function()
             x = variables.position.x,
             y = variables.position.y,
             point = variables.position.point,
+            bgTexture = "Blizzard Dialog Background",
+            background = true,
         }
     end
 end
