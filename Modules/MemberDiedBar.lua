@@ -17,7 +17,7 @@ function private.Addon:UNIT_DIED(event, unitGUID)
         return
     end
     local unit = UnitTokenFromGUID(unitGUID)
-    if not UnitInParty(unit) and not UnitInRaid(unit) and not UnitIsUnit(unit, "player") then
+    if (not UnitInParty(unit) and not UnitInRaid(unit) and not UnitIsUnit(unit, "player")) or UnitIsFeignDeath(unit) then
         return
     end
     if not private.activeMemberDiedBar then
