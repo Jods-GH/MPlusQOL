@@ -39,13 +39,13 @@ local function ToggleResurrectionReminder(shouldShow)
     end
 end
 
-
-function private.Addon:INCOMING_RESURRECT_CHANGED(event, unit)
-    if not private.db.profile.enableResurrectionReminder or unit ~= "player" or not UnitHasIncomingResurrection("player") then
+function private.Addon:RESURRECT_REQUEST(event, inviter)
+    if not private.db.profile.enableResurrectionReminder then
         ToggleResurrectionReminder(false)
         return
+    elseif UnitAffectingCombat("player") or UnitAffectingCombat(inviter) or UnitExists("boss1") and UnitAffectingCombat("boss1") then
+        ToggleResurrectionReminder(true)
     end
-    ToggleResurrectionReminder(true)
 end
 
 private.testResurrectionReminder = (function()
