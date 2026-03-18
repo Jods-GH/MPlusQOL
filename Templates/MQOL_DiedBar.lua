@@ -141,7 +141,7 @@ local function SetGUIDAndStartTimer(widget, unitGUID)
                 else
                     assert(false, "MPlusQOL Unknown death event type: " .. lastEvent.event .. " please alert the author")
                 end
-                if lastEvent.overkill > 0 then
+                if lastEvent.overkill and lastEvent.overkill > 0 then
                   widget.frame.Text:SetFormattedText("%s %s: %s |T%s:16|t %s (%s overkill)", NameText, private.getLocalisation("MemberDiedText"),
                     spellName, texture, AbbreviateLargeNumbers(lastEvent.amount), AbbreviateLargeNumbers(lastEvent.overkill))  
                 else
