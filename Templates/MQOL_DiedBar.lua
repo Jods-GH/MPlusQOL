@@ -95,7 +95,7 @@ local function SetGUIDAndStartTimer(widget, unitGUID)
     end)
     local color = C_ClassColor.GetClassColor(classFile)
     local NameText = C_ColorUtil.WrapTextInColor(name, color)
-    
+
     -- death info
     local session = C_DamageMeter.GetCombatSessionFromType(1, 9) -- current session deaths
     if session.combatSources and #session.combatSources > 0 then
@@ -105,50 +105,57 @@ local function SetGUIDAndStartTimer(widget, unitGUID)
         if private.db.global.memberDiedBar[private.ACTIVE_EDITMODE_LAYOUT].enableDeathInformation then
             local recapEvents = C_DeathRecap.GetRecapEvents(session.combatSources[1].deathRecapID)
             if not issecrettable(recapEvents) and recapEvents and #recapEvents > 0 then
-                assert(recapEvents[1].destGUID == unitGUID, "MPlusQOL Death recap GUID mismatch, please alert the author")
-                local lastEvent = recapEvents[1]
-                local spellName, texture
-                -- this is directly taken from BlizzardDeathRecap.lua GetEventInfo
-                if strsub(lastEvent.event, 1, 5) == "SPELL" then
-                    local spellInfo = C_Spell.GetSpellInfo(lastEvent.spellId)
-                    spellName = spellInfo.name
-                    texture = spellInfo.iconID
-                elseif lastEvent.event == "SWING_DAMAGE" then
-                    spellName = ACTION_SWING
-                    texture = C_Spell.GetSpellTexture(88163)
-                elseif lastEvent.event == "ENVIRONMENTAL_DAMAGE" then
-                    if string.upper(lastEvent.environmentalType) == "DROWNING" then
-                        spellName = ACTION_ENVIRONMENTAL_DAMAGE_DROWNING
-                        texture = "spell_shadow_demonbreath";
-                    elseif string.upper(lastEvent.environmentalType) == "FALLING" then 
-                        spellName = ACTION_ENVIRONMENTAL_DAMAGE_FALLING
-                        texture = "ability_rogue_quickrecovery";
-                    elseif string.upper(lastEvent.environmentalType) == "FIRE" or string.upper(lastEvent.environmentalType) == "LAVA" then
-                        spellName = ACTION_ENVIRONMENTAL_DAMAGE_FIRE
-                        texture = "spell_fire_fire";
-                    elseif string.upper(lastEvent.environmentalType) == "SLIME" then
-                        spellName = ACTION_ENVIRONMENTAL_DAMAGE_SLIME
-                        texture = "inv_misc_slime_01";
-                    elseif string.upper(lastEvent.environmentalType) == "FATIGUE" then
-                        spellName = ACTION_ENVIRONMENTAL_DAMAGE_FATIGUE
-                        texture = "ability_creature_cursed_05";
-                    else
-                        spellName = ACTION_ENVIRONMENTAL_DAMAGE_FATIGUE
-                        texture = "ability_creature_cursed_05"; -- default
-                    end
+                for key, event in pairs(recapEvents) do
+                    if event.destGUID == unitGUID then
+                        local lastEvent = recapEvents[key]
+                        local spellName, texture
+                        -- this is directly taken from BlizzardDeathRecap.lua GetEventInfo
+                        if strsub(lastEvent.event, 1, 5) == "SPELL" then
+                            local spellInfo = C_Spell.GetSpellInfo(lastEvent.spellId)
+                            spellName = spellInfo.name
+                            texture = spellInfo.iconID
+                        elseif lastEvent.event == "SWING_DAMAGE" then
+                            spellName = ACTION_SWING
+                            texture = C_Spell.GetSpellTexture(88163)
+                        elseif lastEvent.event == "ENVIRONMENTAL_DAMAGE" then
+                            if string.upper(lastEvent.environmentalType) == "DROWNING" then
+                                spellName = ACTION_ENVIRONMENTAL_DAMAGE_DROWNING
+                                texture = "spell_shadow_demonbreath";
+                            elseif string.upper(lastEvent.environmentalType) == "FALLING" then
+                                spellName = ACTION_ENVIRONMENTAL_DAMAGE_FALLING
+                                texture = "ability_rogue_quickrecovery";
+                            elseif string.upper(lastEvent.environmentalType) == "FIRE" or string.upper(lastEvent.environmentalType) == "LAVA" then
+                                spellName = ACTION_ENVIRONMENTAL_DAMAGE_FIRE
+                                texture = "spell_fire_fire";
+                            elseif string.upper(lastEvent.environmentalType) == "SLIME" then
+                                spellName = ACTION_ENVIRONMENTAL_DAMAGE_SLIME
+                                texture = "inv_misc_slime_01";
+                            elseif string.upper(lastEvent.environmentalType) == "FATIGUE" then
+                                spellName = ACTION_ENVIRONMENTAL_DAMAGE_FATIGUE
+                                texture = "ability_creature_cursed_05";
+                            else
+                                spellName = ACTION_ENVIRONMENTAL_DAMAGE_FATIGUE
+                                texture = "ability_creature_cursed_05"; -- default
+                            end
 
-                    texture = "Interface\\Icons\\"..texture;
-                else
-                    assert(false, "MPlusQOL Unknown death event type: " .. lastEvent.event .. " please alert the author")
+                            texture = "Interface\\Icons\\" .. texture;
+                        else
+                            assert(false,
+                                "MPlusQOL Unknown death event type: " .. lastEvent.event .. " please alert the author")
+                        end
+                        if lastEvent.overkill and lastEvent.overkill > 0 then
+                            widget.frame.Text:SetFormattedText("%s %s: %s |T%s:16|t %s (%s overkill)", NameText,
+                                private.getLocalisation("MemberDiedText"),
+                                spellName, texture, AbbreviateLargeNumbers(lastEvent.amount),
+                                AbbreviateLargeNumbers(lastEvent.overkill))
+                        else
+                            widget.frame.Text:SetFormattedText("%s %s: %s |T%s:16|t %s", NameText,
+                                private.getLocalisation("MemberDiedText"),
+                                spellName, texture, AbbreviateLargeNumbers(lastEvent.amount))
+                        end
+                        return
+                    end
                 end
-                if lastEvent.overkill and lastEvent.overkill > 0 then
-                  widget.frame.Text:SetFormattedText("%s %s: %s |T%s:16|t %s (%s overkill)", NameText, private.getLocalisation("MemberDiedText"),
-                    spellName, texture, AbbreviateLargeNumbers(lastEvent.amount), AbbreviateLargeNumbers(lastEvent.overkill))  
-                else
-                  widget.frame.Text:SetFormattedText("%s %s: %s |T%s:16|t %s", NameText, private.getLocalisation("MemberDiedText"),
-                    spellName, texture, AbbreviateLargeNumbers(lastEvent.amount))  
-                end
-                return
             end
         end
     end
