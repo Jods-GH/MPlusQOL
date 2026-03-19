@@ -204,7 +204,7 @@ local function SetupEditModeSettings(frame)
                 end,
                 set = function(layoutName, value)
                     private.db.global.lustTimer[layoutName].sound = value
-                    HandleLustSound()
+                    private.HandleLustSound()
                 end,
                 default = private.lustTimerVariables.sound,
                 height = 300,
