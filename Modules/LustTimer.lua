@@ -146,8 +146,7 @@ local function onPositionChanged(frame, layoutName, point, x, y)
     private.db.global.lustTimer[layoutName].y = y
     private.db.global.lustTimer[layoutName].point = point
 
-    private.lustTimer.frame:ClearAllPoints()
-    private.lustTimer.frame:SetPoint(point, UIParent, point, x, y)
+    private.lustTimer:ApplySettings()
 end
 
 local lustTimerHasBeenAddedToEditMode = false

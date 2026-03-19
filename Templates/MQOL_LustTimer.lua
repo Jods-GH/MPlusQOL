@@ -46,7 +46,7 @@ local function TriggerLust(self, remainingTime)
 end
 
 local function ApplySettings(widget)
-
+    widget.frame:ClearAllPoints()
     if private.db.global.lustTimer[private.ACTIVE_EDITMODE_LAYOUT] then
         widget.frame:SetPoint(private.db.global.lustTimer[private.ACTIVE_EDITMODE_LAYOUT].point, UIParent,
             private.db.global.lustTimer[private.ACTIVE_EDITMODE_LAYOUT].point,
