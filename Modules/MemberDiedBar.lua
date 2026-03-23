@@ -4,7 +4,11 @@ local LibEditMode = LibStub("LibEditMode")
 local SharedMedia = LibStub("LibSharedMedia-3.0")
 local CustomNames = C_AddOns.IsAddOnLoaded("CustomNames") and LibStub("CustomNames")
 
+local lastTimeSound = GetTime()
 local function HandleMemberDiedSound()
+    if lastTimeSound + 5 < GetTime() then
+        return
+    end
     local sound = SharedMedia:Fetch("sound", private.db.global.memberDiedBar[private.ACTIVE_EDITMODE_LAYOUT].sound)
     PlaySoundFile(sound, "Master")
 end
