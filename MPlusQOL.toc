@@ -67,6 +67,7 @@ Modules\EatingReminder.lua
 Modules\RaidBuffReminder.lua
 Modules\PrivateAuraAnchor.lua
 Modules\LustTimer.lua
+Modules\JoinGroupReminder.lua
 
 
 

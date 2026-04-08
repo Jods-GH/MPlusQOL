@@ -27,6 +27,7 @@ function private.Addon:OnInitialize()
     private.Addon:RegisterEvent("READY_CHECK")
     private.Addon:RegisterEvent("READY_CHECK_FINISHED")
     private.Addon:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")
+    private.Addon:RegisterEvent("LFG_LIST_APPLICATION_STATUS_UPDATED")
 
     private.db = LibStub("AceDB-3.0"):New("MPlusQOL", private.OptionDefaults, true) -- Generates Saved Variables with default Values (if they don't already exist)
     local OptionTable = {
