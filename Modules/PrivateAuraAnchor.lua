@@ -41,6 +41,7 @@ local function handleAnchor()
             parent = private.privateAuraAnchorFrame,
             showCountdownFrame = true,
             showCountdownNumbers = true,
+            isContainer = false,
             iconInfo = {
                 iconAnchor = {
                     point = "CENTER",
