@@ -1,4 +1,4 @@
-## Interface: 120005
+## Interface: 120005, 120007
 ## Title: MPlusQOL
 ## Version: @project-version@
 ## Notes: A multitude of Qol improvements for M+ Dungeons.
