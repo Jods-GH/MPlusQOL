@@ -106,7 +106,6 @@ private.EventFrame:SetScript("OnEvent", OnEvent)
 
 function private.Addon:UNIT_AURA_PLAYER(...)
     private.EatingReminder:UNIT_AURA_PLAYER(...)
-    private.LustTimer:UNIT_AURA_PLAYER(...)
 end
 
 function private.Addon:CHALLENGE_MODE_START(...)

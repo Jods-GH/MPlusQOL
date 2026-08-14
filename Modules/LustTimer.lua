@@ -5,91 +5,47 @@ local SharedMedia = LibStub("LibSharedMedia-3.0")
 
 private.LustTimer = {}
 
-private.HandleLustSound = function()
-    local sound = SharedMedia:Fetch("sound", private.db.global.lustTimer[private.ACTIVE_EDITMODE_LAYOUT].sound)
-    PlaySoundFile(sound, "Master")
+local registeredAuraSoundIDs = {}
+
+local function UnregisterLustSounds()
+    for _, soundID in ipairs(registeredAuraSoundIDs) do
+        C_UnitAuras.RemoveAuraSound(soundID)
+    end
+    wipe(registeredAuraSoundIDs)
 end
 
-local lustIds = {
-    [57723] = true,          -- Exhaustion
-    [57724] = true,          -- Sated
-    [80354] = true,          -- Temporal Displacement
-    [95809] = true,          -- Hunter Pet Insanity
-    [160455] = true, [264689] = true, -- Hunter Pet Fatigued
-    [390435] = true,         -- Exhaustion
-}
+local function RegisterLustSounds()
+    UnregisterLustSounds()
 
-local activeLustTimerInstanceID = nil
----@param event Event
----@param unit UnitId
----@param updateInfo UnitAuraUpdateInfo
-function private.LustTimer:UNIT_AURA_PLAYER(event, unit, updateInfo)
-    if not private.db.global.lustTimer[private.ACTIVE_EDITMODE_LAYOUT].enabled then
+    local layout = private.db.global.lustTimer[private.ACTIVE_EDITMODE_LAYOUT]
+    local soundName = layout and layout.sound
+    if not soundName or soundName == "None" then
         return
     end
-    if not private.lustTimer then
+
+    local soundFile = SharedMedia:Fetch("sound", soundName)
+    if not soundFile then
         return
     end
-    if issecretvalue(updateInfo) then
-        return
-    end
-    if updateInfo.isFullUpdate then
-        for spellId in pairs(lustIds) do
-            local auraData = C_UnitAuras.GetPlayerAuraBySpellID(spellId)
-            local hasBuff = auraData ~= nil
-            if hasBuff then
-                local remainingDuration = auraData.expirationTime - GetTime()
-                private.lustTimer:TriggerLust(remainingDuration)
-                activeLustTimerInstanceID = auraData.auraInstanceID
-                return
-            end
-        end
-    else
-        if updateInfo.removedAuraInstanceIDs then
-            for _, auraInstanceId in pairs (updateInfo.removedAuraInstanceIDs) do
-                if auraInstanceId == activeLustTimerInstanceID then
-                    private.lustTimer:TriggerLust(0)
-                    activeLustTimerInstanceID = nil
-                end
-            end
-        end
-        if updateInfo.updatedAuraInstanceIDs then
-            for _, auraInstanceId in pairs (updateInfo.updatedAuraInstanceIDs) do
-                if auraInstanceId == activeLustTimerInstanceID then
-                    local auraData = C_UnitAuras.GetAuraDataByAuraInstanceID("player", auraInstanceId)
-                    if not auraData or auraData.expirationTime == nil then
-                        private.lustTimer:TriggerLust(0)
-                        activeLustTimerInstanceID = nil
-                    end
-                    private.lustTimer:TriggerLust(auraData.expirationTime - GetTime())
-                end
-            end
-        end
-        if updateInfo.addedAuras then
-            for _, aura in pairs (updateInfo.addedAuras) do
-                if not issecretvalue(aura.spellId) then
-                    if lustIds[aura.spellId] then
-                        private.lustTimer:TriggerLust(aura.expirationTime - GetTime())
-                        activeLustTimerInstanceID = aura.auraInstanceID
-                        return
-                    end
-                end
-            end
+
+    for spellId in pairs(private.lustBuffIds) do
+        local soundID = C_UnitAuras.AddAuraSound(Enum.UnitAuraSoundTrigger.Added, {
+            unitToken = "player",
+            spellID = spellId,
+            soundFileName = soundFile,
+            outputChannel = "Master",
+        })
+        if soundID then
+            table.insert(registeredAuraSoundIDs, soundID)
         end
     end
 end
-
-local function CreateLustTimer()
-    local widget = AceGui:Create("MQOL_LustTimer")
-    widget.frame:Show()
-    return widget
-end
+private.RegisterLustSounds = RegisterLustSounds
 
 local function ShowLustTimer()
     if not private.lustTimer then
-        private.lustTimer = CreateLustTimer()
+        return
     end
-
     if not private.lustTimer.frame:IsShown() then
         private.lustTimer.frame:Show()
     end
@@ -113,13 +69,12 @@ local function shouldLustTimerBeShown()
     return C_ChallengeMode.IsChallengeModeActive() or C_InstanceEncounter.IsEncounterInProgress()
 end
 
-
 function private.LustTimer:CHALLENGE_MODE_START(event)
     ToggleLustTimer(true)
 end
 
 function private.LustTimer:CHALLENGE_MODE_COMPLETED(event)
-    ToggleLustTimer(false)
+    ToggleLustTimer(shouldLustTimerBeShown())
 end
 
 function private.LustTimer:ENCOUNTER_START(event, encounterID, encounterName, difficultyID, groupSize)
@@ -192,7 +147,7 @@ local function SetupEditModeSettings(frame)
                 minValue = 1,
                 maxValue = 200,
                 valueStep = 1,
-            },           
+            },
             {
                 name = private.getLocalisation("lustSound"),
                 desc = private.getLocalisation("lustSoundDescription"),
@@ -203,7 +158,12 @@ local function SetupEditModeSettings(frame)
                 end,
                 set = function(layoutName, value)
                     private.db.global.lustTimer[layoutName].sound = value
-                    private.HandleLustSound()
+                    -- Re-register the aura-applied sound and give an immediate preview.
+                    RegisterLustSounds()
+                    local soundFile = SharedMedia:Fetch("sound", value)
+                    if soundFile then
+                        PlaySoundFile(soundFile, "Master")
+                    end
                 end,
                 default = private.lustTimerVariables.sound,
                 height = 300,
@@ -228,40 +188,31 @@ private.initializeLustTimer = function()
             sound = private.lustTimerVariables.sound,
         }
     end
+
+    if not private.lustTimer then
+        private.lustTimer = AceGui:Create("MQOL_LustTimer")
+    end
+    private.lustTimer:ApplySettings()
+    ToggleLustTimer(shouldLustTimerBeShown())
+
+    RegisterLustSounds()
 end
 
 LibEditMode:RegisterCallback('enter', function(layoutName)
     if private.isInitialized then
         if not private.lustTimer then
             private.lustTimer = AceGui:Create("MQOL_LustTimer")
-            private.lustTimer.frame:Show()
-            private.lustTimer.frame.startTime = GetTime() - 10
-            local loopDuration = 5
-            private.lustTimer:TriggerLust(loopDuration)
-            private.lustTimer.frame:SetScript("OnUpdate", function(self, elapsed)
-                if self.startTime and GetTime() - self.startTime >= loopDuration  then
-                    private.lustTimer:TriggerLust(loopDuration)
-                    self.startTime = GetTime()
-                end
-            end)
-            if private.db.global.lustTimer[private.ACTIVE_EDITMODE_LAYOUT] then
-                private.lustTimer.frame:SetPoint(private.db.global.lustTimer[private.ACTIVE_EDITMODE_LAYOUT].point,
-                    UIParent,
-                    private.db.global.lustTimer[private.ACTIVE_EDITMODE_LAYOUT].point,
-                    private.db.global.lustTimer[private.ACTIVE_EDITMODE_LAYOUT].x,
-                    private.db.global.lustTimer[private.ACTIVE_EDITMODE_LAYOUT].y)
-            else
-                private.lustTimer.frame:SetPoint("CENTER", UIParent, "CENTER")
-            end
         end
+        private.lustTimer:ApplySettings()
+        private.lustTimer.frame:Show()
+        private.lustTimer:SetPreview(true)
         SetupEditModeSettings(private.lustTimer.frame)
     end
 end)
 
 LibEditMode:RegisterCallback('exit', function(layoutName)
     if private.lustTimer then
-        private.lustTimer.frame:SetScript("OnUpdate", nil)
-        private.lustTimer:Release()
-        private.lustTimer = nil
+        private.lustTimer:SetPreview(false)
+        ToggleLustTimer(shouldLustTimerBeShown())
     end
 end)
