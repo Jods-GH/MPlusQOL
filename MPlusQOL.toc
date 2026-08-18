@@ -52,7 +52,7 @@ Templates\MQOL_DiedBar.lua
 Templates\MQOL_ResurrectionReminder.lua
 Templates\MQOL_BrezTimer.lua
 Templates\MQOL_RaidBuffReminder.lua
-Templates\MQOL_PrivateAuraAnchor.lua
+#Templates\MQOL_PrivateAuraAnchor.lua
 Templates\MQOL_LustTimer.lua
 
 # Main logic
@@ -63,9 +63,9 @@ Modules\ResurectionReminder.lua
 Modules\RepairReminder.lua
 Modules\MemberDiedBar.lua
 Modules\BrezTimer.lua
-Modules\EatingReminder.lua
+#Modules\EatingReminder.lua
 Modules\RaidBuffReminder.lua
-Modules\PrivateAuraAnchor.lua
+#Modules\PrivateAuraAnchor.lua
 Modules\LustTimer.lua
 Modules\JoinGroupReminder.lua
 
