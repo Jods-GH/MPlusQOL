@@ -51,7 +51,7 @@ function private.Addon:OnEnable()
     private.initializeMemberDiedBar()
     private.initializeRepairReminder()
     private.initializeRaidBuffReminder()
-    private.initializePrivateAuraAnchor()
+    -- private.initializePrivateAuraAnchor()
     private.initializeLustTimer()
     private.isInitialized = true
 end
@@ -94,19 +94,19 @@ function private.Addon:SlashCommand(msg) -- called when slash command is used
     AceConfigDialog:Open(appName)
 end
 
-private.EventFrame = CreateFrame("Frame")
+-- private.EventFrame = CreateFrame("Frame")
 
-private.EventFrame:RegisterUnitEvent("UNIT_AURA", "player")
-local function OnEvent(self, event, ...)
-    if event == "UNIT_AURA" then
-        private.Addon:UNIT_AURA_PLAYER(event, ...)
-    end
-end
-private.EventFrame:SetScript("OnEvent", OnEvent)
+-- private.EventFrame:RegisterUnitEvent("UNIT_AURA", "player")
+-- local function OnEvent(self, event, ...)
+--     if event == "UNIT_AURA" then
+--         private.Addon:UNIT_AURA_PLAYER(event, ...)
+--     end
+-- end
+-- private.EventFrame:SetScript("OnEvent", OnEvent)
 
-function private.Addon:UNIT_AURA_PLAYER(...)
-    private.EatingReminder:UNIT_AURA_PLAYER(...)
-end
+-- function private.Addon:UNIT_AURA_PLAYER(...)
+--     private.EatingReminder:UNIT_AURA_PLAYER(...)
+-- end
 
 function private.Addon:CHALLENGE_MODE_START(...)
     private.BrezTimer:CHALLENGE_MODE_START(...)
